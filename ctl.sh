@@ -79,9 +79,8 @@ elif [ ${ctl_type} = "ps" ] ; then
     done
     ps arr
 elif [ ${ctl_type} = "clean-disk" ] ; then
-    settings=~/Library/Group\ Containers/group.com.docker/settings.json
-    dimg=$(sed -En 's/.*diskPath.*:.*"(.*)".*/\1/p' < "$settings")
-    echo "$dimg"
+    # TODO
+    # read the reserved_images.ini and clean the docker images
 else
     help
 fi

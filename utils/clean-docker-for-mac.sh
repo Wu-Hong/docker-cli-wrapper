@@ -50,7 +50,9 @@ done;
 echo ""
 
 echo "==> Removing Docker.qcow2 file"
-rm ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+settings=~/Library/Group\ Containers/group.com.docker/settings.json
+dimg=$(sed -En 's/.*diskPath.*:.*"(.*)".*/\1/p' < "$settings")
+rm ${dimg}
 
 echo "==> Launching Docker"
 open -a Docker
