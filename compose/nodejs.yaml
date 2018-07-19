@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+  nodejs:
+    ports:
+    - "31235:31235"
+    volumes:
+    - /Users/howu/Workspace/docker/volume/nodejs:/root/nodejs
+    - /Users/howu/Workspace/docker/volume/.bashrc:/root/.bashrc 
+    image: node:latest
+    command:
+    - /bin/sh
+    - -c
+    - "while true; do echo [`whoami`][`date '+%Y-%m-%d %H:%M:%S'`]: the container is alive; sleep 10; done" 
+    restart: always 

@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+  python:
+    ports:
+    - "31236:31236"
+    volumes:
+    - /Users/howu/Workspace/docker/volume/python3.6.5:/root/python3.6.5
+    - /Users/howu/Workspace/docker/volume/.bashrc:/root/.bashrc 
+    image: python:3.6.5
+    command:
+    - /bin/sh
+    - -c
+    - "while true; do echo [`whoami`][`date '+%Y-%m-%d %H:%M:%S'`]: the container is alive; sleep 10; done" 
+    restart: always 

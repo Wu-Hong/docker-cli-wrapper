@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+  java9:
+    ports:
+    - "31236:31236"
+    volumes:
+    - /Users/howu/Workspace/docker/volume/java:/home/java
+    - /Users/howu/Workspace/docker/volume/.bashrc:/root/.bashrc 
+    image: java:9-jdk
+    command: 
+    - /bin/sh
+    - -c
+    - "mkdir /home/jovyan/.jupyter; while true; do echo [`whoami`][`date '+%Y-%m-%d %H:%M:%S'`]: the container is alive; sleep 10; done"
+    restart: always 
