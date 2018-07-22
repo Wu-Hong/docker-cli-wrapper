@@ -111,7 +111,7 @@ elif [ ${ctl_type} = "clean-disk" ] ; then
     if [ ${is_mac} -ge 1 ] ; then
         # read the reserved_images.ini and clean the docker images
         reserved_images_list=`read_file_line_by_line "${script_dir}/reserved_images.ini" | xargs`
-        echo         "\"${script_dir}/utils/clean-docker-for-mac.sh\" ${reserved_images_list}"
+        bash "${script_dir}/utils/clean-docker-for-mac.sh" ${reserved_images_list}
     else
         log "INFO: the os is not mac os, no need to clean disk."
     fi
