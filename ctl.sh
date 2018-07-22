@@ -40,6 +40,21 @@ function ps()
     done
 }
 
+function read_file_line_by_line()
+{
+    filepath=$1
+    for line in `cat ${filepath}`
+    do
+        echo ${line}
+    done
+}
+
+function display_compose_file_by_filename()
+{
+    filename=$1
+    cat ${compose_file_dir}/${filename}.yaml
+}
+
 if [ $# -lt 1 ] ; then
     help
 elif [ ${ctl_type} = "up" ] ; then
@@ -78,9 +93,26 @@ elif [ ${ctl_type} = "ps" ] ; then
         arr="$arr $ele"
     done
     ps arr
+elif [ ${ctl_type} = "list" ] ; then
+    log "INFO: The following are all compose file"
+    for file_path in $(ls ${compose_file_dir}/*.yaml)
+    do
+        ele=`basename ${file_path} .yaml`
+        echo ${ele}
+    done
+elif [ ${ctl_type} = "describe" ] ; then
+    filename=$2
+    display_compose_file_by_filename ${filename}
 elif [ ${ctl_type} = "clean-disk" ] ; then
-    # TODO
-    # read the reserved_images.ini and clean the docker images
+    # this command is suit for mac, so you need judge firstly
+    is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`
+    if [ ${is_mac} -ge 1 ] ; then
+        # read the reserved_images.ini and clean the docker images
+        reserved_images_list=`read_file_line_by_line "${script_dir}/reserved_images.ini" | xargs`
+        "${script_dir}/utils/clean-docker-for-mac.sh"
+    else
+        log "INFO: the os is not mac os, no need to clean disk."
+    fi
 else
     help
 fi
