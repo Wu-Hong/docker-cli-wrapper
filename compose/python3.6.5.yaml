@@ -10,5 +10,5 @@ services:
     command:
     - /bin/sh
     - -c
-    - "while true; do echo [`whoami`][`date '+%Y-%m-%d %H:%M:%S'`]: the container is alive; sleep 10; done"
+    - "${INIT_COMMAND}"
     restart: always

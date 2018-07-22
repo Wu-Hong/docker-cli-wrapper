@@ -10,5 +10,5 @@ services:
     command:
     - /bin/sh
     - -c
-    - "mkdir /home/jovyan/.jupyter; while true; do echo [`whoami`][`date '+%Y-%m-%d %H:%M:%S'`]: the container is alive; sleep 10; done"
+    - "mkdir /home/jovyan/.jupyter; ${INIT_COMMAND}"
     restart: always

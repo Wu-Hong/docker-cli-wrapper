@@ -5,10 +5,10 @@ services:
     - "31236:31236"
     volumes:
     - ${VOLUME_HOME}/java:/home/java
-    - ${VOLUME_HOME}/.bashrc:/root/.bashrc 
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     image: java:9-jdk
-    command: 
+    command:
     - /bin/sh
     - -c
-    - "mkdir /home/jovyan/.jupyter; while true; do echo [`whoami`][`date '+%Y-%m-%d %H:%M:%S'`]: the container is alive; sleep 10; done"
-    restart: always 
+    - "${INIT_COMMAND}"
+    restart: always
