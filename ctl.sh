@@ -57,6 +57,9 @@ function display_compose_file_by_filename()
     cat ${filepath}
 }
 
+# jump to the directory where the .env file is located to prevent docker-compose can not find environment variables, this is a pair(pushd & popd)
+pushd ${script_dir}
+echo "================================="
 if [ $# -lt 1 ] ; then
     help
 elif [ ${ctl_type} = "up" ] ; then
@@ -120,3 +123,5 @@ elif [ ${ctl_type} = "clean-disk" ] ; then
 else
     help
 fi
+echo "================================="
+popd
