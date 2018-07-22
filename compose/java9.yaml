@@ -4,8 +4,8 @@ services:
     ports:
     - "31236:31236"
     volumes:
-    - /Users/howu/Workspace/docker/volume/java:/home/java
-    - /Users/howu/Workspace/docker/volume/.bashrc:/root/.bashrc 
+    - ${VOLUME_HOME}/java:/home/java
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc 
     image: java:9-jdk
     command: 
     - /bin/sh

@@ -96,7 +96,7 @@ elif [ ${ctl_type} = "ps" ] ; then
     done
     ps arr
 elif [ ${ctl_type} = "list" ] ; then
-    log "INFO: The following are all compose file"
+    echo "The following are all compose file:"
     for file_path in $(ls ${compose_file_dir}/*.yaml)
     do
         ele=`basename ${file_path} .yaml`
