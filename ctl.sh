@@ -11,7 +11,7 @@ function log()
 
 function help()
 {
-    log "USAGE: $0 [type: up, down, up-all, down-all] [files: the suffix of compose file must be .yaml]"
+    echo "USAGE: $0 [sub-cmd]"
 }
 
 function up()
@@ -52,7 +52,9 @@ function read_file_line_by_line()
 function display_compose_file_by_filename()
 {
     filename=$1
-    cat ${compose_file_dir}/${filename}.yaml
+    filepath=${compose_file_dir}/${filename}.yaml
+    log "INFO: filepath: ${filepath}"
+    cat ${filepath}
 }
 
 if [ $# -lt 1 ] ; then
