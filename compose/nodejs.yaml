@@ -2,7 +2,7 @@ version: '3.0'
 services:
   nodejs:
     ports:
-    - "31235:31235"
+    - "${NODEJS_PORT}:${NODEJS_PORT}"
     volumes:
     - ${VOLUME_HOME}/nodejs:/root/nodejs
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc

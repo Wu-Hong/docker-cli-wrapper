@@ -12,6 +12,8 @@ function log()
 function help()
 {
     echo "USAGE: $0 [sub-cmd]"
+    echo "sub-cmd:"
+    cat ${script_dir}/ctl.sh | grep -v grep | grep '${ctl_type} = ' | awk '{print $5}'
 }
 
 function up()
@@ -110,6 +112,9 @@ elif [ ${ctl_type} = "describe" ] ; then
     display_compose_file_by_filename ${filename}
 elif [ ${ctl_type} = "backup-images" ] ; then
     docker images --format="{{.Repository}}:{{.Tag}}" > "${script_dir}/reserved_images.ini"
+elif [ ${ctl_type} = "validate" ] ; then
+    filename=$2
+    docker-compose -f ${compose_file_dir}/${filename}.yaml config
 elif [ ${ctl_type} = "clean-disk" ] ; then
     # this command is suit for mac, so you need judge firstly
     is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`

@@ -2,7 +2,7 @@ version: '3.0'
 services:
   python:
     ports:
-    - "31236:31236"
+    - "${PYTHON_PORT}:${PYTHON_PORT}"
     volumes:
     - ${VOLUME_HOME}/python3.6.5:/root/python3.6.5
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
