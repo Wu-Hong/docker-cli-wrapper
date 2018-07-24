@@ -4,6 +4,11 @@ compose_file_dir=${script_dir}/compose
 ctl_type=$1
 files=$2
 
+function init()
+{
+    echo "please excute: alias dcw=${script_dir}/ctl.sh"
+}
+
 function log()
 {
     echo "-> [${USER}][`date '+%Y-%m-%d %H:%M:%S'`] - ${*}"
@@ -61,9 +66,11 @@ function display_compose_file_by_filename()
 
 # jump to the directory where the .env file is located to prevent docker-compose can not find environment variables, this is a pair(pushd & popd)
 pushd ${script_dir}
-echo "================================="
+echo "======================================"
 if [ $# -lt 1 ] ; then
     help
+elif [ ${ctl_type} = "init" ] ; then
+    init
 elif [ ${ctl_type} = "up" ] ; then
     arr=(${files//,/ })
     if [ "${arr}" = "" ]; then
@@ -110,8 +117,9 @@ elif [ ${ctl_type} = "list" ] ; then
 elif [ ${ctl_type} = "describe" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
-elif [ ${ctl_type} = "backup-images" ] ; then
+elif [ ${ctl_type} = "backup" ] ; then
     docker images --format="{{.Repository}}:{{.Tag}}" > "${script_dir}/reserved_images.ini"
+    cat ${script_dir}/reserved_images.ini
 elif [ ${ctl_type} = "validate" ] ; then
     filename=$2
     docker-compose -f ${compose_file_dir}/${filename}.yaml config
@@ -128,5 +136,5 @@ elif [ ${ctl_type} = "clean-disk" ] ; then
 else
     help
 fi
-echo "================================="
+echo "======================================"
 popd
