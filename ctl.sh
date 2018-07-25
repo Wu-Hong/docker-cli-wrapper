@@ -47,6 +47,13 @@ function ps()
     done
 }
 
+function inspect()
+{
+    filename=$1
+    log "INFO: fuzzy matching to the following containers:"
+    docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
+}
+
 function read_file_line_by_line()
 {
     filepath=$1
@@ -107,6 +114,9 @@ elif [ ${ctl_type} = "ps" ] ; then
         arr="$arr $ele"
     done
     ps arr
+elif [ ${ctl_type} = "inspect" ] ; then
+    filename=$2
+    inspect ${filename}
 elif [ ${ctl_type} = "list" ] ; then
     echo "The following are all compose file:"
     for file_path in $(ls ${compose_file_dir}/*.yaml)
