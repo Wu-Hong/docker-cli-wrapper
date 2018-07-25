@@ -1,0 +1,32 @@
+version: '3.0'
+services:
+  master:
+    volumes:
+    - ${VOLUME_HOME}/ansible/master:/root/ansible
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos:7-dev
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always
+  agent-1:
+    volumes:
+    - ${VOLUME_HOME}/ansible/agent-1:/root/ansible
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos:7-dev
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always
+  agent-2:
+    volumes:
+    - ${VOLUME_HOME}/ansible/agent-2:/root/ansible
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos:7-dev
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always

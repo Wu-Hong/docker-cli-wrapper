@@ -1,12 +1,12 @@
 version: '3.0'
 services:
-  nodejs:
+  centos:
     ports:
-    - "${NODEJS_PORT}:${NODEJS_PORT}"
+    - "${CENTOS_PORT}:${CENTOS_PORT}"
     volumes:
-    - ${VOLUME_HOME}/nodejs:/root/nodejs
+    - ${VOLUME_HOME}/centos:/root/centos
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: node:latest
+    image: centos:7
     command:
     - /bin/sh
     - -c
