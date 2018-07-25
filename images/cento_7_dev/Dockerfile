@@ -3,4 +3,7 @@ RUN yum install -y \
   openssh-server \
   openssh-clients \
   iproute \
-  which
+  which \
+  net-tools \
+  lsof \
+  vim-enhanced

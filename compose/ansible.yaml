@@ -1,6 +1,8 @@
 version: '3.0'
 services:
   master:
+    ports:
+    - "${ANSIBLE_MASTER_PORT}:22"
     volumes:
     - ${VOLUME_HOME}/ansible/master:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
@@ -8,9 +10,11 @@ services:
     command:
     - /bin/sh
     - -c
-    - "${INIT_COMMAND}"
+    - "${ANSIBLE_INIT_COMMAND}"
     restart: always
-  agent-1:
+  agent1:
+    ports:
+    - "${ANSIBLE_AGENT1_PORT}:22"
     volumes:
     - ${VOLUME_HOME}/ansible/agent-1:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
@@ -18,9 +22,11 @@ services:
     command:
     - /bin/sh
     - -c
-    - "${INIT_COMMAND}"
+    - "${ANSIBLE_INIT_COMMAND}"
     restart: always
-  agent-2:
+  agent2:
+    ports:
+    - "${ANSIBLE_AGENT2_PORT}:22"
     volumes:
     - ${VOLUME_HOME}/ansible/agent-2:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
@@ -28,5 +34,5 @@ services:
     command:
     - /bin/sh
     - -c
-    - "${INIT_COMMAND}"
+    - "${ANSIBLE_INIT_COMMAND}"
     restart: always
