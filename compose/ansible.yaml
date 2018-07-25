@@ -4,13 +4,13 @@ services:
     ports:
     - "${ANSIBLE_MASTER_PORT}:22"
     volumes:
-    - ${VOLUME_HOME}/ansible/master:/root/ansible
+    - ${VOLUME_HOME}/ansible/master:/etc/ansible/
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     image: centos:7-dev
     command:
     - /bin/sh
     - -c
-    - "${ANSIBLE_INIT_COMMAND}"
+    - "yum install -y ansible; ${ANSIBLE_INIT_COMMAND}"
     restart: always
   agent1:
     ports:
