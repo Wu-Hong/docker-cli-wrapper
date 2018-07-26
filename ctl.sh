@@ -121,6 +121,9 @@ elif [ ${ctl_type} = "list" ] ; then
 elif [ ${ctl_type} = "describe" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
+elif [ ${ctl_type} = "in" ] ; then
+    container_name=$2
+    docker exec -it ${container_name} sh
 elif [ ${ctl_type} = "backup" ] ; then
     docker images --format="{{.Repository}}:{{.Tag}}" > "${script_dir}/reserved_images.ini"
     cat ${script_dir}/reserved_images.ini
