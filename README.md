@@ -12,7 +12,7 @@ show the alias of using dcw.
 
 eg.
 
-```
+```shell
 $ dcw init
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
@@ -27,7 +27,7 @@ launch one or several containers refer to the compose file name.
 
 eg.
 
-```
+```shell
 $ dcw up java9
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
@@ -44,7 +44,7 @@ shutdown one or several containers refer to the compose file name.
 
 eg.
 
-```
+```shell
 $ dcw down java9
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
@@ -70,7 +70,7 @@ show containers status which is launched by docker-compose.
 
 eg.
 
-```
+```shell
 $ dcw ps
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
@@ -111,7 +111,7 @@ list all compose file name.
 
 eg.
 
-```
+```shell
 $ dcw list
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
@@ -132,7 +132,7 @@ display the content of a specific compose file.
 
 eg.
 
-```
+```shell
 $ dcw describe java9
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
@@ -169,7 +169,7 @@ validate the compose file.
 
 eg.
 
-```
+```shell
 $ dcw validate java9
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
