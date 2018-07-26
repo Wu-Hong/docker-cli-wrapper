@@ -17,7 +17,7 @@ services:
     ports:
     - "${ANSIBLE_AGENT1_PORT}:8080"
     volumes:
-    - ${VOLUME_HOME}/ansible/agent-1:/root/ansible
+    - ${VOLUME_HOME}/ansible/agent1:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     image: centos:7-dev
     command:
@@ -29,7 +29,19 @@ services:
     ports:
     - "${ANSIBLE_AGENT2_PORT}:8080"
     volumes:
-    - ${VOLUME_HOME}/ansible/agent-2:/root/ansible
+    - ${VOLUME_HOME}/ansible/agent2:/root/ansible
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos:7-dev
+    command:
+    - /bin/sh
+    - -c
+    - "${ANSIBLE_INIT_COMMAND}"
+    restart: always
+  agent3:
+    ports:
+    - "${ANSIBLE_AGENT3_PORT}:8080"
+    volumes:
+    - ${VOLUME_HOME}/ansible/agent3:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     image: centos:7-dev
     command:

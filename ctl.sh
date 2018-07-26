@@ -43,15 +43,12 @@ function ps()
 {
     for filename in ${arr[@]}
     do
-        docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml ps | tail -1 | grep -v -e "----------"
+        log "INFO: container info of [${compose_file_dir}/${filename}.yaml]: "
+        # docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml ps
+        docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml ps | awk '{print $1}' | grep -v Name | grep -v -e '-----------------------' | xargs -I {} -R 2 bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}" --no-trunc && echo -n "IP:" && docker inspect --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
+        # docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
+        echo
     done
-}
-
-function inspect()
-{
-    filename=$1
-    log "INFO: fuzzy matching to the following containers:"
-    docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
 }
 
 function read_file_line_by_line()
@@ -114,9 +111,6 @@ elif [ ${ctl_type} = "ps" ] ; then
         arr="$arr $ele"
     done
     ps arr
-elif [ ${ctl_type} = "inspect" ] ; then
-    filename=$2
-    inspect ${filename}
 elif [ ${ctl_type} = "list" ] ; then
     echo "The following are all compose file:"
     for file_path in $(ls ${compose_file_dir}/*.yaml)
