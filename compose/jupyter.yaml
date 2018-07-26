@@ -2,13 +2,12 @@ version: '3.0'
 services:
   jupyter:
     ports:
-    - "${JUPYTER_PORT}:${JUPYTER_PORT}"
+    - "${JUPYTER_PORT}:8080"
     volumes:
-    - ${VOLUME_HOME}/jupyter/work:/home/jovyan/work
+    - ${VOLUME_HOME}/jupyter/workspace:/home/jupyter
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: jupyter/scipy-notebook:latest
+    image: centos_jupyter:0.1
     command:
     - /bin/sh
-    - -c
-    - "mkdir /home/jovyan/.jupyter; ${INIT_COMMAND}"
+    - /home/jupyter/jupyter_runner.sh
     restart: always
