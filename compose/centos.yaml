@@ -6,7 +6,7 @@ services:
     volumes:
     - ${VOLUME_HOME}/centos:/root/centos
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos:7
+    image: centos:7-dev
     command:
     - /bin/sh
     - -c
