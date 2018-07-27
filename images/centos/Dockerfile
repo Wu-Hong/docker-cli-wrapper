@@ -6,4 +6,6 @@ RUN yum install -y \
   which \
   net-tools \
   lsof \
-  vim-enhanced
+  vim-enhanced \
+  git \
+  wget

@@ -104,13 +104,19 @@ elif [ ${ctl_type} = "down-all" ] ; then
     done
     down arr
 elif [ ${ctl_type} = "ps" ] ; then
+    filename=$2
     arr=""
-    for file_path in $(ls ${compose_file_dir}/*.yaml)
-    do
-        ele=`basename ${file_path} .yaml`
-        arr="$arr $ele"
-    done
-    ps arr
+    if [ ! -n "${filename}" ]; then
+        for file_path in $(ls ${compose_file_dir}/*.yaml)
+        do
+            ele=`basename ${file_path} .yaml`
+            arr="$arr $ele"
+        done
+        ps arr
+    else
+        arr="$arr $filename"
+        ps arr
+    fi
 elif [ ${ctl_type} = "list" ] ; then
     echo "The following are all compose file:"
     for file_path in $(ls ${compose_file_dir}/*.yaml)
