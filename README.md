@@ -58,7 +58,7 @@ Removing network java9_default
 
 - up-all
 
-launch all containers refer to the compose files.
+create all containers refer to the compose files.
 
 - down-all
 
