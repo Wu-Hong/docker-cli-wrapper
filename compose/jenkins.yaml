@@ -1,0 +1,13 @@
+version: '3.0'
+services:
+  jenkins:
+    # refer: https://github.com/jenkinsci/docker/blob/master/README.md
+    user: root
+    ports:
+    - "${JENKINS_PORT1}:8080"
+    - "${JENKINS_PORT2}:50000"
+    volumes:
+    - ${VOLUME_HOME}/jenkins:/var/jenkins_home
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: jenkins/jenkins:lts 
+    restart: always
