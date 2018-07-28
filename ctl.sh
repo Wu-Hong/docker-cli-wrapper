@@ -129,7 +129,21 @@ elif [ ${ctl_type} = "describe" ] ; then
     display_compose_file_by_filename ${filename}
 elif [ ${ctl_type} = "in" ] ; then
     container_name=$2
-    docker exec -it ${container_name} sh
+    docker exec -it ${container_name} bash
+elif [ ${ctl_type} = "once" ] ; then
+    image_name=$2
+    docker run --rm -it ${image_name} bash
+elif [ ${ctl_type} = "img" ] ; then
+    docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
+elif [ ${ctl_type} = "reboot" ] ; then
+    arr=(${files//,/ })
+    if [ "${arr}" = "" ]; then
+        help
+    fi
+    down arr
+    echo "reboot ..."
+    sleep 5
+    up arr
 elif [ ${ctl_type} = "backup" ] ; then
     docker images --format="{{.Repository}}:{{.Tag}}" > "${script_dir}/reserved_images.ini"
     cat ${script_dir}/reserved_images.ini
