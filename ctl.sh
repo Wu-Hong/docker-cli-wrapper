@@ -17,8 +17,40 @@ function log()
 function help()
 {
     echo "USAGE: $0 [sub-cmd]"
+    echo
     echo "sub-cmd:"
-    cat ${script_dir}/ctl.sh | grep -v grep | grep '${ctl_type} = ' | awk '{print $5}'
+    cat ${script_dir}/ctl.sh | grep -v grep | grep '${ctl_type} = ' | awk '{print $5}' | xargs -I {} echo -n {}"    "
+    echo
+    echo '''
+special instructions for the following applications:
+-> jenkins:
+    images:
+        master:
+            jenkins/jenkins:lts
+        agent:
+            centos_jdk8
+    dcw up jenkins
+        account: admin/admin
+    dcw ps jenkins
+        adjust the Jenkins node information based on the query results of IPs
+-> ansible:
+    images:
+        master:
+            centos_jupyter
+        slave:
+            centos:7-dev
+    dcw up ansible
+        jupyter portal:
+            password: admin
+    dcw ps ansible
+        adjust the /etc/ansible/hosts of ansible master based on the query results of IPs
+-> jupyter
+    images:
+        centos_jupyter
+    dcw up jupyter
+        jupyter portal:
+            password: admin
+'''
 }
 
 function up()
