@@ -196,3 +196,60 @@ version: '3.0'
 ### clean-disk
 
 clean the disk for mac os.
+
+## special instructions for the following applications:
+
+### jenkins:
+
+- images:
+
+    + master:
+        jenkins/jenkins:lts
+    + agent:
+        centos_jdk8
+
+- dcw up jenkins
+
+    + account:
+        + admin/admin
+
+- dcw ps jenkins
+
+    + adjust the Jenkins node information based on the query results of IPs
+
+- the way of managing node is using the SSH:
+
+    + root/admin
+
+### ansible:
+
+- images:
+
+    + master:
+        centos_jupyter
+    + slave:
+        centos:7-dev
+
+- dcw up ansible
+
+    + jupyter portal:
+        + password: admin
+
+- dcw ps ansible
+
+    + adjust the /etc/ansible/hosts of ansible master based on the query results of IPs
+
+- the way of managing node is using the SSH:
+
+    + root/admin
+
+### jupyter
+
+- images:
+
+    + centos_jupyter
+
+- dcw up jupyter
+
+    + jupyter portal:
+        + password: admin
