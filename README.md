@@ -253,3 +253,18 @@ clean the disk for mac os.
 
     + jupyter portal:
         + password: admin
+
+
+## TODO:
+
+#### gocd
+
+- theory
+
+#### local search engine
+
+- package name ???
+
+#### aria2
+
+- no speed ???
