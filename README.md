@@ -6,7 +6,7 @@ A docker-compose CLI wrapper for the people who try to use docker-compose in mac
 
 ## sub command
 
-### init
+#### init
 
 show the alias of using dcw.
 
@@ -21,7 +21,7 @@ please excute: alias dcw=/Users/howu/Workspace/docker-cli-wrapper/ctl.sh
 ~/Workspace/docker-cli-wrapper
 ```
 
-### up
+#### up
 
 launch one or several containers refer to the compose file name.
 
@@ -38,7 +38,7 @@ Creating java9_java9_1 ... done
 ~/Workspace/docker-cli-wrapper
 ```
 
-### down
+#### down
 
 shutdown one or several containers refer to the compose file name.
 
@@ -56,15 +56,15 @@ Removing network java9_default
 ~/Workspace/docker-cli-wrapper
 ```
 
-### up-all
+#### up-all
 
 create all containers refer to the compose files.
 
-### down-all
+#### down-all
 
 shutdown all containers refer to the compose file.
 
-### ps
+#### ps
 
 show containers status which is launched by docker-compose.
 
@@ -105,7 +105,7 @@ IP:172.18.0.2
 ~/Workspace/docker-cli-wrapper
 ```
 
-### list
+#### list
 
 list all compose file name.
 
@@ -126,7 +126,7 @@ python3.6.5
 ~/Workspace/docker-cli-wrapper
 ```
 
-### describe
+#### describe
 
 display the content of a specific compose file.
 
@@ -155,15 +155,15 @@ services:
 ~/Workspace/docker-cli-wrapper
 ```
 
-### in
+#### in
 
 exec bash to go in a container.
 
-### backup
+#### backup
 
 backup the images, so you can filter which one should be reserved.
 
-### validate
+#### validate
 
 validate the compose file.
 
@@ -193,13 +193,13 @@ version: '3.0'
 ~/Workspace/docker-cli-wrapper
 ```
 
-### clean-disk
+#### clean-disk
 
 clean the disk for mac os.
 
 ## special instructions for the following applications:
 
-### jenkins:
+#### jenkins:
 
 - images:
 
@@ -221,7 +221,7 @@ clean the disk for mac os.
 
     + root/admin
 
-### ansible:
+#### ansible:
 
 - images:
 
@@ -243,7 +243,7 @@ clean the disk for mac os.
 
     + root/admin
 
-### jupyter
+#### jupyter
 
 - images:
 
