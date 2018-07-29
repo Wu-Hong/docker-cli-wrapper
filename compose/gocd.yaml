@@ -1,0 +1,37 @@
+version: '3.0'
+services:
+  master:
+    user: root
+    ports:
+    - "${GOCD_PORT1}:8153"
+    - "${GOCD_PORT2}:8154"
+    volumes:
+    - ${VOLUME_HOME}/gocd/godata:/godata
+    - ${VOLUME_HOME}/gocd/go:/home/go
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos_gocd_server:0.1
+    command:
+    - /bin/sh
+    - -c
+    - "/etc/init.d/go-server start; ${INIT_COMMAND}"
+    restart: always
+  slave1:
+    volumes:
+    - ${VOLUME_HOME}/gocd/slave1:/home/gocd
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos_gocd_agent:0.1
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always
+  slave2:
+    volumes:
+    - ${VOLUME_HOME}/gocd/slave2:/home/gocd
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: centos_gocd_agent:0.1
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always

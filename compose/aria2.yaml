@@ -1,0 +1,12 @@
+version: '3.0'
+services:
+  aria2:
+    # refer: https://github.com/ziahamza/webui-aria2
+    ports:
+    - "${ARIA2_PORT1}:6800"
+    - "${ARIA2_PORT2}:8080"
+    volumes:
+    - ${VOLUME_HOME}/aria2/Downloads:/data
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: webui-aria2:0.1
+    restart: always
