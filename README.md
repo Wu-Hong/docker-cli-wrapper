@@ -264,3 +264,7 @@ clean the disk for mac os.
 #### local search engine
 
 - package name ???
+
+### nginx
+
+- can not work
