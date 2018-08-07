@@ -9,5 +9,6 @@ services:
     image: centos_jupyter:0.1
     command:
     - /bin/sh
-    - /home/jupyter/jupyter_runner.sh
+    - -c
+    - "${JUPYTER_INIT_COMMAND}"
     restart: always

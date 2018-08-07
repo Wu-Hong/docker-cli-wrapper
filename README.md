@@ -264,7 +264,3 @@ clean the disk for mac os.
 #### local search engine
 
 - package name ???
-
-#### aria2
-
-- no speed ???

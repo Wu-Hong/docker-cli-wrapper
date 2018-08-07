@@ -6,7 +6,7 @@ files=$2
 
 function init()
 {
-    echo "please excute: alias dcw=${script_dir}/ctl.sh"
+    echo -e "please excute: \nalias dcw=${script_dir}/ctl.sh"
 }
 
 function log()
@@ -16,11 +16,13 @@ function log()
 
 function help()
 {
-    echo "USAGE: $0 [sub-cmd]"
-    echo
+    echo -e "USAGE: $0 [sub-cmd] [compose filename]\n"
     echo "sub-cmd:"
-    cat ${script_dir}/ctl.sh | grep -v grep | grep '${ctl_type} = ' | awk '{print $5}' | xargs -I {} echo -n {}"    "
-    echo -e "\n"
+    cat ${script_dir}/ctl.sh | grep -v grep | grep '${ctl_type} = ' | awk '{print $5}' | xargs -I {} echo "    "{}
+    echo
+    echo "work dir:"
+    echo ${script_dir}
+    echo
 }
 
 function up()
@@ -126,7 +128,7 @@ elif [ ${ctl_type} = "list" ] ; then
         ele=`basename ${file_path} .yaml`
         echo ${ele}
     done
-elif [ ${ctl_type} = "describe" ] ; then
+elif [ ${ctl_type} = "cat" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
 elif [ ${ctl_type} = "in" ] ; then
@@ -135,7 +137,7 @@ elif [ ${ctl_type} = "in" ] ; then
 elif [ ${ctl_type} = "once" ] ; then
     image_name=$2
     docker run --rm -it ${image_name} bash
-elif [ ${ctl_type} = "img" ] ; then
+elif [ ${ctl_type} = "images" ] ; then
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
 elif [ ${ctl_type} = "reboot" ] ; then
     arr=(${files//,/ })
