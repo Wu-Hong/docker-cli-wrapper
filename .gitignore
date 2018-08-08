@@ -8,6 +8,6 @@
 *.ipynb
 *.ipynb_checkpoints
 
-reserved_images.ini
+backup_images.ini
 
 !README.ipynb

@@ -1,6 +1,7 @@
 #!/bin/bash
 script_dir=$(cd "$(dirname "$0")";pwd)
 compose_file_dir=${script_dir}/compose
+backup_images_config_file=${script_dir}/backup_images.ini
 ctl_type=$1
 files=$2
 
@@ -163,8 +164,8 @@ elif [ ${ctl_type} = "reboot" ] ; then
     sleep 5
     up arr
 elif [ ${ctl_type} = "backup" ] ; then
-    docker images --format="{{.Repository}}:{{.Tag}}" > "${script_dir}/reserved_images.ini"
-    cat ${script_dir}/reserved_images.ini
+    docker images --format="{{.Repository}}:{{.Tag}}" > "${backup_images_config_file}"
+    cat ${backup_images_config_file}
 elif [ ${ctl_type} = "validate" ] ; then
     filename=$2
     docker-compose -f ${compose_file_dir}/${filename}.yaml config
@@ -172,9 +173,9 @@ elif [ ${ctl_type} = "clean-disk" ] ; then
     # this command is suit for mac, so you need judge firstly
     is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`
     if [ ${is_mac} -ge 1 ] ; then
-        # read the reserved_images.ini and clean the docker images
-        reserved_images_list=`read_file_line_by_line "${script_dir}/reserved_images.ini" | xargs`
-        bash "${script_dir}/utils/clean-docker-for-mac.sh" ${reserved_images_list}
+        # read the backup_images.ini and clean the docker images
+        backup_images_list=`read_file_line_by_line "${backup_images_config_file}" | xargs`
+        bash "${script_dir}/utils/clean-docker-for-mac.sh" ${backup_images_list}
     else
         log "INFO: the os is not mac os, no need to clean disk."
     fi
