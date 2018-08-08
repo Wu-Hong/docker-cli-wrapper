@@ -254,6 +254,16 @@ clean the disk for mac os.
     + jupyter portal:
         + password: admin
 
+#### gocd
+
+- images:
+
+    + centos_gocd_server:0.1
+    + centos_gocd_agent:0.1
+
+- dcw up jupyter
+
+- by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
 
 ## TODO:
 

@@ -108,9 +108,10 @@ elif [ ${ctl_type} = "down-all" ] ; then
     done
     down arr
 elif [ ${ctl_type} = "ps" ] ; then
-    filename=$2
+    param=$2
     arr=""
-    if [ ! -n "${filename}" ]; then
+    if [ ! -n "${param}" ]; then
+        # support for all compose file
         for file_path in $(ls ${compose_file_dir}/*.yaml)
         do
             ele=`basename ${file_path} .yaml`
@@ -118,8 +119,18 @@ elif [ ${ctl_type} = "ps" ] ; then
         done
         ps arr
     else
-        arr="$arr $filename"
-        ps arr
+        # support for only one compose file
+        if [ ${param} = "-f" ] ; then
+            filename=$3
+            while true
+            do
+                docker ps --format="table {{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}" --no-trunc | grep ${filename}.*_1
+                sleep 1
+            done
+        else
+            arr="$arr $param"
+            ps arr
+        fi
     fi
 elif [ ${ctl_type} = "list" ] ; then
     echo "The following are all compose file:"
