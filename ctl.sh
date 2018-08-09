@@ -152,8 +152,8 @@ elif [ ${ctl_type} = "once" ] ; then
 elif [ ${ctl_type} = "images" ] ; then
     echo "the following images are those exist in the os: "
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
-    echo -e "\nthe following images are those we can build: "
-    find ${script_dir}/images -name build.sh | xargs -I {} cat {}
+    echo -e "\nthe following images are those we can build (path: ${script_dir}/images): "
+    find ${script_dir}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
 elif [ ${ctl_type} = "reboot" ] ; then
     arr=(${files//,/ })
     if [ "${arr}" = "" ]; then

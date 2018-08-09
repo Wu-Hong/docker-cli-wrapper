@@ -278,3 +278,8 @@ clean the disk for mac os.
 ### nginx
 
 - can not work
+
+### gitlab
+
+- support for git server
+- refer: https://docs.gitlab.com/omnibus/docker/
