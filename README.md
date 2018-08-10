@@ -1,8 +1,12 @@
 # dcw
 
+---
+
 ## summary
 
 A docker-compose CLI wrapper for the people who try to use docker-compose in mac.
+
+---
 
 ## sub command
 
@@ -197,6 +201,8 @@ version: '3.0'
 
 clean the disk for mac os.
 
+---
+
 ## special instructions for the following applications:
 
 #### jenkins:
@@ -265,6 +271,8 @@ clean the disk for mac os.
 
 - by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
 
+---
+
 ## TODO:
 
 #### gocd
@@ -283,3 +291,7 @@ clean the disk for mac os.
 
 - support for git server
 - refer: https://docs.gitlab.com/omnibus/docker/
+
+## wordpress
+
+## ruby
