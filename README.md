@@ -283,15 +283,15 @@ clean the disk for mac os.
 
 - package name ???
 
-### nginx
+#### nginx
 
 - can not work
 
-### gitlab
+#### gitlab
 
 - support for git server
 - refer: https://docs.gitlab.com/omnibus/docker/
 
-## wordpress
+#### wordpress
 
-## ruby
+#### ruby
