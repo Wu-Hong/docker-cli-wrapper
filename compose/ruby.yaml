@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+  ruby:
+    ports:
+    - "${RUBY_PORT}:80"
+    volumes:
+    - ${VOLUME_HOME}/ruby:/root/ruby
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    image: ruby:2.5-alpine
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always

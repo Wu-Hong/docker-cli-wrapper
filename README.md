@@ -293,5 +293,3 @@ clean the disk for mac os.
 - refer: https://docs.gitlab.com/omnibus/docker/
 
 #### wordpress
-
-#### ruby
