@@ -293,3 +293,11 @@ clean the disk for mac os.
 - refer: https://docs.gitlab.com/omnibus/docker/
 
 #### wordpress
+
+#### centos GUI
+
+- xvfb
+    GUI
+
+- x11vnc
+    GUI Server
