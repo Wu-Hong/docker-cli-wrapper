@@ -1,28 +1,42 @@
 #!/bin/bash
-script_dir=$(cd "$(dirname "$0")";pwd)
-compose_file_dir=${script_dir}/compose
-backup_images_config_file=${script_dir}/backup_images.ini
-ctl_type=$1
-files=$2
+
+SCRIPT_DIR=$(cd "$(dirname "$0")";pwd)
+ENV_FILE=${SCRIPT_DIR}/.env
+COMPOSE_FILE_DIR=${SCRIPT_DIR}/compose
+BACKUP_IMAGES_CONFIG_FILE=${SCRIPT_DIR}/backup_images.ini
+CTL_TYPE=$1
+FILES=$2
 
 function init()
 {
-    echo -e "please excute: \nalias dcw=${script_dir}/ctl.sh"
+    echo -e "please excute: \nalias dcw=${SCRIPT_DIR}/ctl.sh"
 }
 
 function log()
 {
-    echo "-> [${USER}][`date '+%Y-%m-%d %H:%M:%S'`] - ${*}"
+    local content="-> [`date '+%Y-%m-%d %H:%M:%S'`] - ${*}"
+    local input=${*}
+    case ${input%:*} in
+        INFO)
+            echo -e "\033[32;40m${content}\033[0m"
+            ;;
+        ERROR)
+            echo -e "\033[31;40m${content}\033[0m"
+            ;;
+        *)
+            echo -e "\033[32;40m${content}\033[0m"
+    esac
 }
+
 
 function help()
 {
     echo -e "USAGE: $0 [sub-cmd] [compose filename]\n"
     echo "sub-cmd:"
-    cat ${script_dir}/ctl.sh | grep -v grep | grep '${ctl_type} = ' | awk '{print $5}' | xargs -I {} echo "    "{}
+    cat ${SCRIPT_DIR}/ctl.sh | grep -v grep | grep '${CTL_TYPE} = ' | awk '{print $5}' | xargs -I {} echo "    "{}
     echo
     echo "work dir:"
-    echo ${script_dir}
+    echo ${SCRIPT_DIR}
     echo
 }
 
@@ -30,8 +44,8 @@ function up()
 {
     for filename in ${arr[@]}
     do
-        log "INFO: up, file path: ${compose_file_dir}/${filename}.yaml"
-        docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml up -d
+        log "INFO: up, file path: ${COMPOSE_FILE_DIR}/${filename}.yaml"
+        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml up -d
     done
 }
 
@@ -39,8 +53,8 @@ function down()
 {
     for filename in ${arr[@]}
     do
-        log "INFO: down, file path: ${compose_file_dir}/${filename}.yaml"
-        docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml down --remove-orphans
+        log "INFO: down, file path: ${COMPOSE_FILE_DIR}/${filename}.yaml"
+        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml down --remove-orphans
     done
 }
 
@@ -48,9 +62,9 @@ function ps()
 {
     for filename in ${arr[@]}
     do
-        log "INFO: container info of [${compose_file_dir}/${filename}.yaml]: "
-        # docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml ps
-        docker-compose -p ${filename} -f ${compose_file_dir}/${filename}.yaml ps | awk '{print $1}' | grep -v Name | grep -v -e '-----------------------' | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}" --no-trunc && docker inspect --format=" ┖-> IP: {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
+        log "INFO: container info of [${COMPOSE_FILE_DIR}/${filename}.yaml]: "
+        # docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps
+        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps | awk '{print $1}' | grep -v Name | grep -v -e '-----------------------' | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}" --no-trunc && docker inspect --format=" ┖-> IP: {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
         # docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
         echo
     done
@@ -58,7 +72,7 @@ function ps()
 
 function read_file_line_by_line()
 {
-    filepath=$1
+    local filepath=$1
     for line in `cat ${filepath}`
     do
         echo ${line}
@@ -67,53 +81,53 @@ function read_file_line_by_line()
 
 function display_compose_file_by_filename()
 {
-    filename=$1
-    filepath=${compose_file_dir}/${filename}.yaml
+    local filename=$1
+    local filepath=${COMPOSE_FILE_DIR}/${filename}.yaml
     log "INFO: filepath: ${filepath}"
     cat ${filepath}
 }
 
 # jump to the directory where the .env file is located to prevent docker-compose can not find environment variables, this is a pair(pushd & popd)
-pushd ${script_dir}
+pushd ${SCRIPT_DIR}
 echo "======================================"
 if [ $# -lt 1 ] ; then
     help
-elif [ ${ctl_type} = "init" ] ; then
+elif [ ${CTL_TYPE} = "init" ] ; then
     init
-elif [ ${ctl_type} = "up" ] ; then
-    arr=(${files//,/ })
+elif [ ${CTL_TYPE} = "up" ] ; then
+    arr=(${FILES//,/ })
     if [ "${arr}" = "" ]; then
         help
     fi
     up arr
-elif [ ${ctl_type} = "down" ] ; then
-    arr=(${files//,/ })
+elif [ ${CTL_TYPE} = "down" ] ; then
+    arr=(${FILES//,/ })
     if [ "${arr}" = "" ]; then
         help
     fi
     down arr
-elif [ ${ctl_type} = "up-all" ] ; then
+elif [ ${CTL_TYPE} = "up-all" ] ; then
     arr=""
-    for file_path in $(ls ${compose_file_dir}/*.yaml)
+    for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
     do
         ele=`basename ${file_path} .yaml`
         arr="$arr $ele"
     done
     up arr
-elif [ ${ctl_type} = "down-all" ] ; then
+elif [ ${CTL_TYPE} = "down-all" ] ; then
     arr=""
-    for file_path in $(ls ${compose_file_dir}/*.yaml)
+    for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
     do
         ele=`basename ${file_path} .yaml`
         arr="$arr $ele"
     done
     down arr
-elif [ ${ctl_type} = "ps" ] ; then
+elif [ ${CTL_TYPE} = "ps" ] ; then
     param=$2
     arr=""
     if [ ! -n "${param}" ]; then
         # support for all compose file
-        for file_path in $(ls ${compose_file_dir}/*.yaml)
+        for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
         do
             ele=`basename ${file_path} .yaml`
             arr="$arr $ele"
@@ -133,29 +147,32 @@ elif [ ${ctl_type} = "ps" ] ; then
             ps arr
         fi
     fi
-elif [ ${ctl_type} = "list" ] ; then
+elif [ ${CTL_TYPE} = "list" ] ; then
     echo "The following are all compose file:"
-    for file_path in $(ls ${compose_file_dir}/*.yaml)
+    for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
     do
         ele=`basename ${file_path} .yaml`
         echo ${ele}
     done
-elif [ ${ctl_type} = "cat" ] ; then
+elif [ ${CTL_TYPE} = "cat" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
-elif [ ${ctl_type} = "in" ] ; then
+elif [ ${CTL_TYPE} = "in" ] ; then
     container_name=$2
     docker exec -it ${container_name} bash
-elif [ ${ctl_type} = "once" ] ; then
+    if [ $? = 126 ] ;then
+        docker exec -it ${container_name} sh
+    fi
+elif [ ${CTL_TYPE} = "once" ] ; then
     image_name=$2
     docker run --rm -it ${image_name} bash
-elif [ ${ctl_type} = "images" ] ; then
+elif [ ${CTL_TYPE} = "images" ] ; then
     echo "the following images are those exist in the os: "
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
-    echo -e "\nthe following images are those we can build (path: ${script_dir}/images): "
-    find ${script_dir}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
-elif [ ${ctl_type} = "reboot" ] ; then
-    arr=(${files//,/ })
+    echo -e "\nthe following images are those we can build (path: ${SCRIPT_DIR}/images): "
+    find ${SCRIPT_DIR}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
+elif [ ${CTL_TYPE} = "reboot" ] ; then
+    arr=(${FILES//,/ })
     if [ "${arr}" = "" ]; then
         help
     fi
@@ -163,21 +180,38 @@ elif [ ${ctl_type} = "reboot" ] ; then
     echo "reboot ..."
     sleep 5
     up arr
-elif [ ${ctl_type} = "backup" ] ; then
-    docker images --format="{{.Repository}}:{{.Tag}}" > "${backup_images_config_file}"
-    cat ${backup_images_config_file}
-elif [ ${ctl_type} = "validate" ] ; then
+elif [ ${CTL_TYPE} = "backup" ] ; then
+    docker images --format="{{.Repository}}:{{.Tag}}" > "${BACKUP_IMAGES_CONFIG_FILE}"
+    cat ${BACKUP_IMAGES_CONFIG_FILE}
+elif [ ${CTL_TYPE} = "validate" ] ; then
     filename=$2
-    docker-compose -f ${compose_file_dir}/${filename}.yaml config
-elif [ ${ctl_type} = "clean-disk" ] ; then
+    docker-compose -f ${COMPOSE_FILE_DIR}/${filename}.yaml config
+elif [ ${CTL_TYPE} = "clean-disk" ] ; then
     # this command is suit for mac, so you need judge firstly
     is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`
     if [ ${is_mac} -ge 1 ] ; then
+        # clean the none images
+        docker rmi `docker images | grep -E '<none>.*<none>' | awk '{print $3}'`
         # read the backup_images.ini and clean the docker images
-        backup_images_list=`read_file_line_by_line "${backup_images_config_file}" | xargs`
-        bash "${script_dir}/utils/clean-docker-for-mac.sh" ${backup_images_list}
+        backup_images_list=`read_file_line_by_line "${BACKUP_IMAGES_CONFIG_FILE}" | xargs`
+        bash "${SCRIPT_DIR}/utils/clean-docker-for-mac.sh" ${backup_images_list}
     else
         log "INFO: the os is not mac os, no need to clean disk."
+    fi
+elif [ ${CTL_TYPE} = "svc" ] ; then
+    svc=$2
+    subcmd=$3
+    if [ ${svc} = "ss" ] ; then
+        if [ ${subcmd} = "qr" ] ; then
+            protocol="ss://"
+            ip=`ipconfig getifaddr en0`
+            encryptMethod="aes-256-cfb"
+            password="nBhc3N3b3JkQGhvc3R"
+            port=`cat ${ENV_FILE} | grep SS_PORT | sed 's/SS_PORT=//g'`
+            echo ip:${ip} port:${port} password:${password} encrypt:${encryptMethod}
+            # echo -n "ss://"`echo -n aes-256-cfb:nBhc3N3b3JkQGhvc3R@${ip}:30019 | base64` | qr
+            echo -n ${protocol}`echo -n ${encryptMethod}:${password}@${ip}:${port} | base64` | qr
+        fi
     fi
 else
     help

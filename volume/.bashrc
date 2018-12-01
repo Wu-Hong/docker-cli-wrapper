@@ -1,15 +1,15 @@
 # .bashrc
 
 # User specific aliases and functions
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
 
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias ll='ls -laF'
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
