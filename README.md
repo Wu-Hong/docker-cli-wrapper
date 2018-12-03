@@ -1,17 +1,10 @@
-# dcw
+# **dcw - docker cli wrapper for mac**
 
----
-
-## summary
-
+## **Summary**
 A docker-compose CLI wrapper for the people who try to use docker-compose in mac.
 
----
-
-## sub command
-
+## **Sub command**
 #### init
-
 show the alias of using dcw.
 
 eg.
@@ -26,7 +19,6 @@ please excute: alias dcw=/Users/howu/Workspace/docker-cli-wrapper/ctl.sh
 ```
 
 #### up
-
 launch one or several containers refer to the compose file name.
 
 eg.
@@ -43,7 +35,6 @@ Creating java9_java9_1 ... done
 ```
 
 #### down
-
 shutdown one or several containers refer to the compose file name.
 
 eg.
@@ -61,15 +52,12 @@ Removing network java9_default
 ```
 
 #### up-all
-
 create all containers refer to the compose files.
 
 #### down-all
-
 shutdown all containers refer to the compose file.
 
 #### ps
-
 show containers status which is launched by docker-compose.
 
 eg.
@@ -110,7 +98,6 @@ IP:172.18.0.2
 ```
 
 #### list
-
 list all compose file name.
 
 eg.
@@ -130,14 +117,13 @@ python3.6.5
 ~/Workspace/docker-cli-wrapper
 ```
 
-#### describe
-
+#### cat
 display the content of a specific compose file.
 
 eg.
 
 ```shell
-$ dcw describe java9
+$ dcw cat java9
 ~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
 ======================================
 -> [howu][2018-07-26 16:32:52] - INFO: filepath: /Users/howu/Workspace/docker-cli-wrapper/compose/java9.yaml
@@ -160,15 +146,12 @@ services:
 ```
 
 #### in
-
-exec bash to go in a container.
+exec sh/bash(auto judge) to go in a container.
 
 #### backup
-
 backup the images, so you can filter which one should be reserved.
 
 #### validate
-
 validate the compose file.
 
 eg.
@@ -198,106 +181,49 @@ version: '3.0'
 ```
 
 #### clean-disk
-
 clean the disk for mac os.
 
----
-
-## special instructions for the following applications:
-
+## **Instructions for specific application**
 #### jenkins:
-
 - images:
-
     + master:
         jenkins/jenkins:lts
     + agent:
         centos_jdk8
-
 - dcw up jenkins
-
     + account:
         + admin/admin
 
-- dcw ps jenkins
-
-    + adjust the Jenkins node information based on the query results of IPs
-
+~~- dcw ps jenkins
+    + adjust the Jenkins node information based on the query results of IPs~~
+    **No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, but you still need to config the host of salves when you first up the jenkins cluster**
 - the way of managing node is using the SSH:
-
     + root/admin
 
 #### ansible:
-
 - images:
-
     + master:
         centos_jupyter
     + slave:
         centos:7-dev
-
 - dcw up ansible
-
     + jupyter portal:
         + password: admin
-
 - dcw ps ansible
-
     + adjust the /etc/ansible/hosts of ansible master based on the query results of IPs
-
 - the way of managing node is using the SSH:
-
     + root/admin
 
 #### jupyter
-
 - images:
-
     + centos_jupyter
-
 - dcw up jupyter
-
     + jupyter portal:
         + password: admin
 
 #### gocd
-
 - images:
-
     + centos_gocd_server:0.1
     + centos_gocd_agent:0.1
-
 - dcw up jupyter
-
 - by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
-
----
-
-## TODO:
-
-#### gocd
-
-- theory
-
-#### local search engine
-
-- package name ???
-
-#### nginx
-
-- can not work
-
-#### gitlab
-
-- support for git server
-- refer: https://docs.gitlab.com/omnibus/docker/
-
-#### wordpress
-
-#### centos GUI
-
-- xvfb
-    GUI
-
-- x11vnc
-    GUI Server
