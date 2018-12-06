@@ -31,7 +31,7 @@
 # Ex 3: A collection of database servers in the 'dbservers' group
 
 ## [dbservers]
-## 
+##
 ## db01.intranet.mydomain.net
 ## db02.intranet.mydomain.net
 ## 10.25.1.56
@@ -46,6 +46,6 @@
 127.0.0.1 ansible_ssh_pass=admin
 
 [remote]
-172.18.0.2 ansible_ssh_pass=admin
-172.18.0.4 ansible_ssh_pass=admin
-172.18.0.5 ansible_ssh_pass=admin
+agent1 ansible_ssh_pass=admin
+agent2 ansible_ssh_pass=admin
+agent3 ansible_ssh_pass=admin

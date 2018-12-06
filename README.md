@@ -209,8 +209,10 @@ clean the disk for mac os.
 - dcw up ansible
     + jupyter portal:
         + password: admin
-- dcw ps ansible
-    + adjust the /etc/ansible/hosts of ansible master based on the query results of IPs
+
+~~- dcw ps ansible
+    + adjust the /etc/ansible/hosts of ansible master based on the query results of IPs~~
+    **No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, even you first up the ansible cluster**
 - the way of managing node is using the SSH:
     + root/admin
 
