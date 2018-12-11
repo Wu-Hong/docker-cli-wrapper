@@ -159,9 +159,9 @@ elif [ ${CTL_TYPE} = "cat" ] ; then
     display_compose_file_by_filename ${filename}
 elif [ ${CTL_TYPE} = "in" ] ; then
     container_name=$2
-    docker exec -it ${container_name} bash
+    docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} bash
     if [ $? = 126 ] ;then
-        docker exec -it ${container_name} sh
+        docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} sh
     fi
 elif [ ${CTL_TYPE} = "once" ] ; then
     image_name=$2
