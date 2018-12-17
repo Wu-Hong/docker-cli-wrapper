@@ -1,107 +1,26 @@
 #!/bin/bash
 
-SCRIPT_DIR=$(cd "$(dirname "$0")";pwd)
-ENV_FILE=${SCRIPT_DIR}/.env
-COMPOSE_FILE_DIR=${SCRIPT_DIR}/compose
-BACKUP_IMAGES_CONFIG_FILE=${SCRIPT_DIR}/backup_images.ini
+# jump to the directory where the .env file is located to prevent docker-compose can not find environment variables
+cd $(dirname $0)/
+source ./set-vars.sh
+source ./utilities.sh
+
 CTL_TYPE=$1
-FILES=$2
-
-function init()
-{
-    echo -e "please excute: \nalias dcw=${SCRIPT_DIR}/ctl.sh"
-}
-
-function log()
-{
-    local content="-> [`date '+%Y-%m-%d %H:%M:%S'`] - ${*}"
-    local input=${*}
-    case ${input%:*} in
-        INFO)
-            echo -e "\033[32;40m${content}\033[0m"
-            ;;
-        ERROR)
-            echo -e "\033[31;40m${content}\033[0m"
-            ;;
-        *)
-            echo -e "\033[32;40m${content}\033[0m"
-    esac
-}
-
-
-function help()
-{
-    echo -e "USAGE: $0 [sub-cmd] [compose filename]\n"
-    echo "sub-cmd:"
-    cat ${SCRIPT_DIR}/ctl.sh | grep -v grep | grep '${CTL_TYPE} = ' | awk '{print $5}' | xargs -I {} echo "    "{}
-    echo
-    echo "work dir:"
-    echo ${SCRIPT_DIR}
-    echo
-}
-
-function up()
-{
-    for filename in ${arr[@]}
-    do
-        log "INFO: up, file path: ${COMPOSE_FILE_DIR}/${filename}.yaml"
-        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml up -d
-    done
-}
-
-function down()
-{
-    for filename in ${arr[@]}
-    do
-        log "INFO: down, file path: ${COMPOSE_FILE_DIR}/${filename}.yaml"
-        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml down --remove-orphans
-    done
-}
-
-function ps()
-{
-    for filename in ${arr[@]}
-    do
-        log "INFO: container info of [${COMPOSE_FILE_DIR}/${filename}.yaml]: "
-        # docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps
-        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps | awk '{print $1}' | grep -v Name | grep -v -e '-----------------------' | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}" --no-trunc && docker inspect --format=" ┖-> IP: {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
-        # docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
-        echo
-    done
-}
-
-function read_file_line_by_line()
-{
-    local filepath=$1
-    for line in `cat ${filepath}`
-    do
-        echo ${line}
-    done
-}
-
-function display_compose_file_by_filename()
-{
-    local filename=$1
-    local filepath=${COMPOSE_FILE_DIR}/${filename}.yaml
-    log "INFO: filepath: ${filepath}"
-    cat ${filepath}
-}
-
-# jump to the directory where the .env file is located to prevent docker-compose can not find environment variables, this is a pair(pushd & popd)
-pushd ${SCRIPT_DIR}
 echo "======================================"
 if [ $# -lt 1 ] ; then
     help
 elif [ ${CTL_TYPE} = "init" ] ; then
     init
 elif [ ${CTL_TYPE} = "up" ] ; then
-    arr=(${FILES//,/ })
+    files=$2
+    arr=(${files//,/ })
     if [ "${arr}" = "" ]; then
         help
     fi
     up arr
 elif [ ${CTL_TYPE} = "down" ] ; then
-    arr=(${FILES//,/ })
+    files=$2
+    arr=(${files//,/ })
     if [ "${arr}" = "" ]; then
         help
     fi
@@ -172,7 +91,8 @@ elif [ ${CTL_TYPE} = "images" ] ; then
     echo -e "\nthe following images are those we can build (path: ${SCRIPT_DIR}/images): "
     find ${SCRIPT_DIR}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
 elif [ ${CTL_TYPE} = "reboot" ] ; then
-    arr=(${FILES//,/ })
+    files=$2
+    arr=(${files//,/ })
     if [ "${arr}" = "" ]; then
         help
     fi
@@ -194,7 +114,7 @@ elif [ ${CTL_TYPE} = "clean-disk" ] ; then
         docker rmi `docker images | grep -E '<none>.*<none>' | awk '{print $3}'`
         # read the backup_images.ini and clean the docker images
         backup_images_list=`read_file_line_by_line "${BACKUP_IMAGES_CONFIG_FILE}" | xargs`
-        bash "${SCRIPT_DIR}/utils/clean-docker-for-mac.sh" ${backup_images_list}
+        bash "${SCRIPT_DIR}/third-party/clean-docker-for-mac.sh" ${backup_images_list}
     else
         log "INFO: the os is not mac os, no need to clean disk."
     fi
@@ -217,4 +137,3 @@ else
     help
 fi
 echo "======================================"
-popd
