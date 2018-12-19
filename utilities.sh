@@ -21,7 +21,6 @@ function log()
     esac
 }
 
-
 function help()
 {
     echo -e "USAGE: $0 [sub-cmd] [compose filename]\n"
@@ -31,6 +30,7 @@ function help()
     echo "work dir:"
     echo ${SCRIPT_DIR}
     echo
+    exit
 }
 
 function up()
@@ -78,4 +78,12 @@ function display_compose_file_by_filename()
     local filepath=${COMPOSE_FILE_DIR}/${filename}.yaml
     log "INFO: filepath: ${filepath}"
     cat ${filepath}
+}
+
+function clean_images() # images_key_word
+{
+    local key_word=$1
+    docker rmi `docker images | grep "${key_word}" | awk '{print $3}'`
+    # clean the none images
+    docker rmi `docker images | grep -E '<none>.*<none>' | awk '{print $3}'`
 }
