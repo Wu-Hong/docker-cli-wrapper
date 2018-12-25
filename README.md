@@ -229,3 +229,6 @@ clean the disk for mac os.
     + centos_gocd_agent:0.1
 - dcw up jupyter
 - by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
+
+### embyserver
+- It is highly recommended to set the administrator account to be invisible and set the password.

@@ -78,10 +78,21 @@ elif [ ${CTL_TYPE} = "cat" ] ; then
     display_compose_file_by_filename ${filename}
 elif [ ${CTL_TYPE} = "in" ] ; then
     container_name=$2
-    docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} bash
-    if [ $? = 126 ] ;then
-        docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} sh
-    fi
+    log "INFO: Checking which shell the container supports"
+    arr="zsh bash sh"
+    final_termial=""
+    for terminal in ${arr[@]}
+    do
+        docker exec ${container_name} ls -l /bin/${terminal}
+        if [ $? -eq 0 ] ; then
+            final_termial=${terminal}
+            break
+        else
+            continue
+        fi
+    done
+    log "INFO: The shell supported is ${terminal}"
+    docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} ${terminal}
 elif [ ${CTL_TYPE} = "once" ] ; then
     image_name=$2
     docker run --rm -it ${image_name} bash
