@@ -232,3 +232,9 @@ clean the disk for mac os.
 
 ### embyserver
 - It is highly recommended to set the administrator account to be invisible and set the password.
+- Settings:
+    - Do not collect user data
+    - Cancel some Scheduled Tasks:
+        `All the Scheduled Tasks can be triggered manually in the Scheduled Tasks panel, so do not worry.`
+        - Check for application updates
+        - Cloud & Folder Sync
