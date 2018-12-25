@@ -147,6 +147,14 @@ elif [ ${CTL_TYPE} = "svc" ] ; then
             # echo -n "ss://"`echo -n aes-256-cfb:nBhc3N3b3JkQGhvc3R@${ip}:30019 | base64` | qr
             echo -n ${protocol}`echo -n ${encryptMethod}:${password}@${ip}:${port} | base64` | qr
         fi
+    elif [ ${svc} = "es" ] ; then
+        if [ ${subcmd} = "qr" ] ; then
+            protocol="http://"
+            ip=`ipconfig getifaddr en0`
+            port=`cat ${ENV_FILE} | grep EMBYSERVER_PORT1 | sed 's/EMBYSERVER_PORT1=//g'`
+            echo ${protocol}${ip}:${port}
+            echo -n ${protocol}${ip}:${port} | qr
+        fi
     fi
 else
     help
