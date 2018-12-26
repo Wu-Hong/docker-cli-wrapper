@@ -230,11 +230,5 @@ clean the disk for mac os.
 - dcw up jupyter
 - by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
 
-### embyserver
-- It is highly recommended to set the administrator account to be invisible and set the password.
-- Settings:
-    - Do not collect user data
-    - Cancel some Scheduled Tasks:
-        `All the Scheduled Tasks can be triggered manually in the Scheduled Tasks panel, so do not worry.`
-        - Check for application updates
-        - Cloud & Folder Sync
+### Gitlab
+- Default Administrator(The server will prompt you to change the password of root when you first login): root/iamadmin

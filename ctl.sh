@@ -58,11 +58,14 @@ elif [ ${CTL_TYPE} = "ps" ] ; then
             filename=$3
             while true
             do
-                docker ps --format="table {{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}" --no-trunc | grep ${filename}.*_1
+                docker ps --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc | grep ${filename}.*_1
                 sleep 1
             done
+        elif [ ${param} = "-a" ] ; then
+            docker ps -a --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
         else
-            arr="$arr $param"
+            filename=${param}
+            arr="$arr ${filename}"
             ps arr
         fi
     fi
@@ -77,12 +80,7 @@ elif [ ${CTL_TYPE} = "cat" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
 elif [ ${CTL_TYPE} = "in" ] ; then
-    filename=$2
-    container_name=`get_containers_name ${filename}`
-    if [ -z "${container_name}" ]; then
-        log "ERROR: The container corresponding to the docker-compose(${filename}) is not running"
-        exit
-    fi
+    container_name=$2
     log "INFO: Checking which shell the container supports"
     arr="zsh bash sh"
     final_termial=""
@@ -98,14 +96,6 @@ elif [ ${CTL_TYPE} = "in" ] ; then
     done
     log "INFO: The shell supported is ${terminal}"
     docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} ${terminal}
-elif [ ${CTL_TYPE} = "logs" ] ; then
-    filename=$2
-    container_name=`get_containers_name ${filename}`
-    if [ -z "${container_name}" ]; then
-        log "ERROR: The container corresponding to the docker-compose(${filename}) is not running"
-        exit
-    fi
-    docker logs ${container_name}
 elif [ ${CTL_TYPE} = "images" ] ; then
     log "INFO: All images in the os: "
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
