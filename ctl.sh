@@ -107,9 +107,10 @@ elif [ ${CTL_TYPE} = "logs" ] ; then
     fi
     docker logs ${container_name}
 elif [ ${CTL_TYPE} = "images" ] ; then
-    echo "the following images are those exist in the os: "
+    log "INFO: All images in the os: "
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
-    echo -e "\nthe following images are those we can build (path: ${SCRIPT_DIR}/images): "
+    echo
+    log "INFO: The images belong to dcw (Dockerfile path: ${SCRIPT_DIR}/images): "
     find ${SCRIPT_DIR}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
 elif [ ${CTL_TYPE} = "reboot" ] ; then
     files=$2
