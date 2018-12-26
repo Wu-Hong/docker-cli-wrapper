@@ -77,7 +77,15 @@ elif [ ${CTL_TYPE} = "cat" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
 elif [ ${CTL_TYPE} = "in" ] ; then
-    container_name=$2
+    filename=$2
+    container_name=`docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps \
+        | awk '{print $1}' \
+        | grep -v Name \
+        | grep -v -e '-----------------------'`
+    if [ -z "$container_name" ]; then
+        log "ERROR: The container corresponding to the docker-compose(${filename}) is not running"
+        exit
+    fi
     log "INFO: Checking which shell the container supports"
     arr="zsh bash sh"
     final_termial=""

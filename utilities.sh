@@ -60,7 +60,7 @@ function ps()
             | awk '{print $1}' \
             | grep -v Name \
             | grep -v -e '-----------------------' \
-            | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}" --no-trunc && docker inspect --format=" ┖-> IP: {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
+            | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}" && docker inspect --format=" ┖-> {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
         # docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
         echo
     done
