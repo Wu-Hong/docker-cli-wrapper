@@ -2,8 +2,8 @@ version: '3.0'
 services:
   embyserver:
     ports:
-    - "${EMBYSERVER_PORT1}:8096" # To expose the HTTP port
-    - "${EMBYSERVER_PORT2}:8920" # To expose the HTTPS port
+    - ${EMBYSERVER_PORT1}:8096 # To expose the HTTP port
+    - ${EMBYSERVER_PORT2}:8920 # To expose the HTTPS port
     hostname: EmbyServer
     volumes:
     - ${VOLUME_HOME}/embyserver/programdata:/config # This is mandatory
@@ -12,9 +12,9 @@ services:
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     # devices:
     # - "/dev/ttyUSB0:/dev/ttyUSB0"  # To mount a render node for VAAPI
-    image: emby/embyserver:3.5.3.0
     environment:
     - UID=1000 # The UID to run emby as (default: 2)
     - GID=100 # The GID to run emby as (default 2)
     - GIDLIST=100 # A comma-separated list of additional GIDs to run emby as (default: 2)
     restart: always
+    image: emby/embyserver:3.5.3.0

@@ -2,13 +2,13 @@ version: '3.0'
 services:
   centos:
     ports:
-    - "${CENTOS_PORT}:${CENTOS_PORT}"
+    - ${CENTOS_PORT}:${CENTOS_PORT}
     volumes:
     - ${VOLUME_HOME}/centos:/root/centos
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos:7-dev
     command:
     - /bin/sh
     - -c
     - "${INIT_COMMAND}"
     restart: always
+    image: centos:7-dev

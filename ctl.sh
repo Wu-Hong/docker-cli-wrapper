@@ -56,10 +56,15 @@ elif [ ${CTL_TYPE} = "ps" ] ; then
         # support for only one compose file
         if [ ${param} = "-f" ] ; then
             filename=$3
+            containers=`get_containers_name ${filename}`
             while true
             do
-                docker ps --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc | grep ${filename}.*_1
-                sleep 1
+                for container in ${containers}
+                do
+                    docker ps -a --filter="name=${container}" --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
+                done
+                echo_green "---"
+                sleep 2
             done
         elif [ ${param} = "-a" ] ; then
             docker ps -a --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
@@ -100,7 +105,7 @@ elif [ ${CTL_TYPE} = "images" ] ; then
     log "INFO: All images in the os: "
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
     echo
-    log "INFO: The images belong to dcw (Dockerfile path: ${SCRIPT_DIR}/images): "
+    log "INFO: The images were built by dcw (Dockerfile path: ${SCRIPT_DIR}/images): "
     find ${SCRIPT_DIR}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
 elif [ ${CTL_TYPE} = "reboot" ] ; then
     files=$2
@@ -109,15 +114,31 @@ elif [ ${CTL_TYPE} = "reboot" ] ; then
         help
     fi
     down arr
-    echo "reboot ..."
-    sleep 5
+    sleep_time=5
+    log "INFO: Start to up after ${sleep_time} seconds..."
+    sleep ${sleep_time}
     up arr
 elif [ ${CTL_TYPE} = "backup" ] ; then
     docker images --format="{{.Repository}}:{{.Tag}}" > "${BACKUP_IMAGES_CONFIG_FILE}"
     cat ${BACKUP_IMAGES_CONFIG_FILE}
 elif [ ${CTL_TYPE} = "validate" ] ; then
-    filename=$2
-    docker-compose -f ${COMPOSE_FILE_DIR}/${filename}.yaml config
+    param=$2
+    if [ ! -n "${param}" ]; then
+        # validate for all compose file, if one is failed then stop
+        for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
+        do
+            filename=`basename ${file_path} .yaml`
+            echo_green "--- ${COMPOSE_FILE_DIR}/${filename}.yaml"
+            docker-compose -f ${COMPOSE_FILE_DIR}/${filename}.yaml config
+            if [ $? -ne 0 ] ; then
+                log "ERROR: The docker-compose file ${COMPOSE_FILE_DIR}/${filename}.yaml is written incorrectly!"
+                exit 1
+            fi
+        done
+    else
+        filename=${param}
+        docker-compose -f ${COMPOSE_FILE_DIR}/${filename}.yaml config
+    fi
 elif [ ${CTL_TYPE} = "clean-disk" ] ; then
     # this command is suit for mac, so you need judge firstly
     is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`

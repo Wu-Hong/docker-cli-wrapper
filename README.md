@@ -1,234 +1,107 @@
-# **dcw - docker cli wrapper for mac**
+# dcw - docker cli wrapper for Mac OS
+![](https://upload.wikimedia.org/wikipedia/commons/7/79/Docker_%28container_engine%29_logo.png)
 
-## **Summary**
-A docker-compose CLI wrapper for the people who try to use docker-compose in mac.
+A docker-compose CLI wrapper for the people who try to use docker-compose in Mac OS.
 
-## **Sub command**
-#### init
-show the alias of using dcw.
+## Sub command
 
-eg.
+### init
+Show the alias of using dcw.
 
-```shell
-$ dcw init
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
-please excute: alias dcw=/Users/howu/Workspace/docker-cli-wrapper/ctl.sh
-======================================
-~/Workspace/docker-cli-wrapper
-```
+### up
+Launch one or several containers refer to the compose file name.
 
-#### up
-launch one or several containers refer to the compose file name.
+### down
+Shutdown one or several containers refer to the compose file name.
 
-eg.
+### up-all
+Create all containers refer to the compose files.
 
-```shell
-$ dcw up java9
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
--> [howu][2018-07-26 16:28:44] - INFO: up, file path: /Users/howu/Workspace/docker-cli-wrapper/compose/java9.yaml
-Creating network "java9_default" with the default driver
-Creating java9_java9_1 ... done
-======================================
-~/Workspace/docker-cli-wrapper
-```
+### down-all
+Shutdown all containers refer to the compose files.
 
-#### down
-shutdown one or several containers refer to the compose file name.
+### ps
+Show containers status which is launched by docker-compose.
+* For all
+`dcw ps`
+* For one
+`dcw ps ansible`
+* For one and continuous refresh
+`dcw ps -f ansible`
 
-eg.
+### list
+List all compose files name.
 
-```shell
-$ dcw down java9
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
--> [howu][2018-07-26 16:30:42] - INFO: down, file path: /Users/howu/Workspace/docker-cli-wrapper/compose/java9.yaml
-Stopping java9_java9_1 ... done
-Removing java9_java9_1 ... done
-Removing network java9_default
-======================================
-~/Workspace/docker-cli-wrapper
-```
+### cat
+Display the content of a specific original compose file.
 
-#### up-all
-create all containers refer to the compose files.
+### in
+Auto select terminal(zsh, bash, sh) and exec it to go in a container.
 
-#### down-all
-shutdown all containers refer to the compose file.
+### backup
+Backup the images, so you can filter which one should be reserved.
 
-#### ps
-show containers status which is launched by docker-compose.
+### validate
+Validate the compose file.
+* Validate all compose files: `dcw validate`
+* Validate specific compose file: `dcw validate ansible`
 
-eg.
+**When you modify the docker-compose file, but you are not sure if it is legal, you should check with `dcw validate` first instead of deploying it.**
 
-```shell
-$ dcw ps
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
--> [howu][2018-07-26 16:31:12] - INFO: container info of [/Users/howu/Workspace/docker-cli-wrapper/compose/ansible.yaml]:
-NAMES               CREATED AT                      STATUS              IMAGE               PORTS
-ansible_agent1_1    2018-07-26 16:24:04 +0800 CST   Up 7 minutes        centos:7-dev        0.0.0.0:30007->8080/tcp
-IP:172.19.0.4
-NAMES               CREATED AT                      STATUS              IMAGE               PORTS
-ansible_agent2_1    2018-07-26 16:24:04 +0800 CST   Up 7 minutes        centos:7-dev        0.0.0.0:30008->8080/tcp
-IP:172.19.0.3
-NAMES               CREATED AT                      STATUS              IMAGE               PORTS
-ansible_agent3_1    2018-07-26 16:24:04 +0800 CST   Up 7 minutes        centos:7-dev        0.0.0.0:30009->8080/tcp
-IP:172.19.0.5
-NAMES               CREATED AT                      STATUS              IMAGE                PORTS
-ansible_master_1    2018-07-26 16:24:04 +0800 CST   Up 7 minutes        centos_jupyter:0.1   0.0.0.0:30006->8080/tcp
-IP:172.19.0.2
+### clean-disk
+Clean the disk occupied by docker images for Mac OS.
 
--> [howu][2018-07-26 16:31:13] - INFO: container info of [/Users/howu/Workspace/docker-cli-wrapper/compose/centos.yaml]:
-NAMES               CREATED AT                      STATUS              IMAGE               PORTS
-centos_centos_1     2018-07-26 16:11:02 +0800 CST   Up 20 minutes       centos:7-dev        0.0.0.0:30003->30003/tcp
-IP:172.18.0.2
-
--> [howu][2018-07-26 16:31:14] - INFO: container info of [/Users/howu/Workspace/docker-cli-wrapper/compose/java9.yaml]:
-
--> [howu][2018-07-26 16:31:15] - INFO: container info of [/Users/howu/Workspace/docker-cli-wrapper/compose/jupyter.yaml]:
-
--> [howu][2018-07-26 16:31:16] - INFO: container info of [/Users/howu/Workspace/docker-cli-wrapper/compose/nginx.yaml]:
-
--> [howu][2018-07-26 16:31:16] - INFO: container info of [/Users/howu/Workspace/docker-cli-wrapper/compose/python3.6.5.yaml]:
-
-======================================
-~/Workspace/docker-cli-wrapper
-```
-
-#### list
-list all compose file name.
-
-eg.
-
-```shell
-$ dcw list
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
-The following are all compose file:
-ansible
-centos
-java9
-jupyter
-nginx
-python3.6.5
-======================================
-~/Workspace/docker-cli-wrapper
-```
-
-#### cat
-display the content of a specific compose file.
-
-eg.
-
-```shell
-$ dcw cat java9
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
--> [howu][2018-07-26 16:32:52] - INFO: filepath: /Users/howu/Workspace/docker-cli-wrapper/compose/java9.yaml
-version: '3.0'
-services:
-  java9:
-    ports:
-    - "${JAVA9_PORT}:${JAVA9_PORT}"
-    volumes:
-    - ${VOLUME_HOME}/java:/home/java
-    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: java:9-jdk
-    command:
-    - /bin/sh
-    - -c
-    - "${INIT_COMMAND}"
-    restart: always
-======================================
-~/Workspace/docker-cli-wrapper
-```
-
-#### in
-exec sh/bash(auto judge) to go in a container.
-
-#### backup
-backup the images, so you can filter which one should be reserved.
-
-#### validate
-validate the compose file.
-
-eg.
-
-```shell
-$ dcw validate java9
-~/Workspace/docker-cli-wrapper ~/Workspace/docker-cli-wrapper
-======================================
-services:
-  java9:
-    command:
-    - /bin/sh
-    - -c
-    - 'while true; do echo [`whoami`][`date ''+%Y-%m-%d %H:%M:%S''`]: the container
-      is alive; sleep 10; done'
-    image: java:9-jdk
-    ports:
-    - 30001:30001/tcp
-    restart: always
-    volumes:
-    - /Users/howu/Workspace/docker-cli-wrapper/volume/java:/home/java:rw
-    - /Users/howu/Workspace/docker-cli-wrapper/volume/.bashrc:/root/.bashrc:rw
-version: '3.0'
-
-======================================
-~/Workspace/docker-cli-wrapper
-```
-
-#### clean-disk
-clean the disk for mac os.
-
-## **Instructions for specific application**
-#### jenkins:
-- images:
-    + master:
+## Instructions for specific application
+### jenkins
+![](https://wiki.jenkins.io/download/attachments/2916393/logo.png?version=1&modificationDate=1302753947000&api=v2)
+* images:
+    - master:
         jenkins/jenkins:lts
-    + agent:
+    - agent:
         centos_jdk8
-- dcw up jenkins
-    + account:
-        + admin/admin
+* dcw up jenkins
+    - account:
+        - admin/admin
 
-~~- dcw ps jenkins
-    + adjust the Jenkins node information based on the query results of IPs~~
+* dcw ps jenkins
+    ~~+ adjust the Jenkins node information based on the query results of IPs~~
     **No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, but you still need to config the host of salves when you first up the jenkins cluster**
-- the way of managing node is using the SSH:
-    + root/admin
+* the way of managing node is using the SSH:
+    - root/admin
 
-#### ansible:
-- images:
+#### ansible
+![](https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg)
+* images:
     + master:
         centos_jupyter
     + slave:
         centos:7-dev
-- dcw up ansible
+* dcw up ansible
     + jupyter portal:
         + password: admin
 
-~~- dcw ps ansible
-    + adjust the /etc/ansible/hosts of ansible master based on the query results of IPs~~
+* dcw ps ansible
+    ~~+ adjust the /etc/ansible/hosts of ansible master based on the query results of IPs~~
     **No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, even you first up the ansible cluster**
-- the way of managing node is using the SSH:
+* the way of managing node is using the SSH:
     + root/admin
 
 #### jupyter
-- images:
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/640px-Jupyter_logo.svg.png)
+* images:
     + centos_jupyter
-- dcw up jupyter
+* dcw up jupyter
     + jupyter portal:
         + password: admin
 
 #### gocd
-- images:
+![](https://impaddo.com/assets/uploads/2017/08/Logo-gocd.png)
+* images:
     + centos_gocd_server:0.1
     + centos_gocd_agent:0.1
-- dcw up jupyter
-- by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
+* dcw up jupyter
+* by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
 
-### Gitlab
-- Default Administrator(The server will prompt you to change the password of root when you first login): root/iamadmin
+### gitlab
+![](https://about.gitlab.com/images/press/logo/svg/gitlab-logo-gray-rgb.svg)
+* The server will prompt you to change the password of `root` when you first login, I suggest to change to root/iamadmin

@@ -2,50 +2,50 @@ version: '3.0'
 services:
   master:
     ports:
-    - "${ANSIBLE_MASTER_PORT}:8080"
+    - ${ANSIBLE_MASTER_PORT}:8080
     volumes:
     - ${VOLUME_HOME}/ansible/master/workspace:/root/workspace
     - ${VOLUME_HOME}/ansible/master/ansible:/etc/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_jupyter:0.1
     command:
     - /bin/sh
     - -c
     - "mkdir -p /root/.jupyter; echo '{\"NotebookApp\": {\"password\": \"sha1:5a1f9a5ad50e:da4bd4f4a1c538a8036cb6fb5693010858b3d195\"}}' > /root/.jupyter/jupyter_notebook_config.json; bash /root/workspace/jupyter_runner.sh; yum install -y ansible; ${ANSIBLE_INIT_COMMAND}"
     restart: always
+    image: centos_jupyter:0.1
   agent1:
     ports:
-    - "${ANSIBLE_AGENT1_PORT}:8080"
+    - ${ANSIBLE_AGENT1_PORT}:8080
     volumes:
     - ${VOLUME_HOME}/ansible/agent1:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos:7-dev
     command:
     - /bin/sh
     - -c
     - "${ANSIBLE_INIT_COMMAND}"
     restart: always
+    image: centos:7-dev
   agent2:
     ports:
-    - "${ANSIBLE_AGENT2_PORT}:8080"
+    - ${ANSIBLE_AGENT2_PORT}:8080
     volumes:
     - ${VOLUME_HOME}/ansible/agent2:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos:7-dev
     command:
     - /bin/sh
     - -c
     - "${ANSIBLE_INIT_COMMAND}"
     restart: always
+    image: centos:7-dev
   agent3:
     ports:
-    - "${ANSIBLE_AGENT3_PORT}:8080"
+    - ${ANSIBLE_AGENT3_PORT}:8080
     volumes:
     - ${VOLUME_HOME}/ansible/agent3:/root/ansible
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos:7-dev
     command:
     - /bin/sh
     - -c
     - "${ANSIBLE_INIT_COMMAND}"
     restart: always
+    image: centos:7-dev

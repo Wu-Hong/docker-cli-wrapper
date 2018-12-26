@@ -2,13 +2,13 @@ version: '3.0'
 services:
   jupyter:
     ports:
-    - "${JUPYTER_PORT}:8080"
+    - ${JUPYTER_PORT}:8080
     volumes:
     - ${VOLUME_HOME}/jupyter/workspace:/home/jupyter
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_jupyter:0.1
     command:
     - /bin/sh
     - -c
     - "${JUPYTER_INIT_COMMAND}"
     restart: always
+    image: centos_jupyter:0.1

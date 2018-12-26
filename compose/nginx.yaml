@@ -2,16 +2,15 @@
 version: '3.0'
 services:
   nginx:
-    image: nginx:1.15.1
     volumes:
      - ${VOLUME_HOME}/nginx/mysite.template:/etc/nginx/conf.d/mysite.template
     ports:
-     - "${NGINX_PORT}:80"
+     - ${NGINX_PORT}:80
     environment:
      - NGINX_HOST=foobar.com
      - NGINX_PORT=80
     command:
-    - /bin/bash 
+    - /bin/bash
     - -c
-    - ${INIT_COMMAND} 
-
+    - ${INIT_COMMAND}
+    image: nginx:1.15.1

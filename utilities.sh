@@ -5,19 +5,31 @@ function init()
     echo -e "please excute: \nalias dcw=${SCRIPT_DIR}/ctl.sh"
 }
 
+function echo_red()
+{
+    local content=${*}
+    echo -e "\033[31;40m${content}\033[0m"
+}
+
+function echo_green()
+{
+    local content=${*}
+    echo -e "\033[32;40m${content}\033[0m"
+}
+
 function log()
 {
     local content="-> [`date '+%Y-%m-%d %H:%M:%S'`] - ${*}"
     local input=${*}
     case ${input%:*} in
         INFO)
-            echo -e "\033[32;40m${content}\033[0m"
+            echo_green ${content}
             ;;
         ERROR)
-            echo -e "\033[31;40m${content}\033[0m"
+            echo_red ${content}
             ;;
         *)
-            echo -e "\033[32;40m${content}\033[0m"
+            echo_green ${content}
     esac
 }
 
@@ -30,7 +42,7 @@ function help()
     echo "work dir:"
     echo ${SCRIPT_DIR}
     echo
-    exit
+    exit 1
 }
 
 function up()
@@ -66,7 +78,7 @@ function ps()
     for filename in ${arr[@]}
     do
         log "INFO: container info of [${COMPOSE_FILE_DIR}/${filename}.yaml]: "
-        get_containers_name ${filename} | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}" && docker inspect --format=" ↳ {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
+        get_containers_name ${filename} | xargs -I {} bash -c 'docker ps -a --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}" && docker inspect --format=" ↳ {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
         echo
     done
 }

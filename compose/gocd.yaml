@@ -3,38 +3,38 @@ services:
   master:
     user: root
     ports:
-    - "${GOCD_PORT1}:8153"
-    - "${GOCD_PORT2}:8154"
+    - ${GOCD_PORT1}:8153
+    - ${GOCD_PORT2}:8154
     volumes:
     - ${VOLUME_HOME}/gocd/master/godata:/godata
     - ${VOLUME_HOME}/gocd/master/go:/home/go
     - ${VOLUME_HOME}/gocd/share:/home/share
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_gocd_server:0.1
     command:
     - /bin/sh
     - -c
     - "${GOCD_MASTER_INIT_COMMAND}; ${INIT_COMMAND}"
     restart: always
+    image: centos_gocd_server:0.1
   slave1:
     volumes:
     - ${VOLUME_HOME}/gocd/slave1:/home/gocd
     - ${VOLUME_HOME}/gocd/share:/home/share
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_gocd_agent:0.1
     command:
     - /bin/sh
     - -c
     - "${GOCD_AGENT_INIT_COMMAND}; ${INIT_COMMAND}"
     restart: always
+    image: centos_gocd_agent:0.1
   slave2:
     volumes:
     - ${VOLUME_HOME}/gocd/slave2:/home/gocd
     - ${VOLUME_HOME}/gocd/share:/home/share
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_gocd_agent:0.1
     command:
     - /bin/sh
     - -c
     - "${GOCD_AGENT_INIT_COMMAND}; ${INIT_COMMAND}"
     restart: always
+    image: centos_gocd_agent:0.1

@@ -3,13 +3,18 @@ services:
   gitlab:
     # refer: https://hub.docker.com/r/gitlab/gitlab-ce/
     ports:
-    - "${GITLAB_PORT1}:443"
-    - "${GITLAB_PORT2}:80"
-    - "${GITLAB_PORT3}:22"
+    - ${GITLAB_PORT1}:443
+    - ${GITLAB_PORT2}:80
+    - ${GITLAB_PORT3}:22
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://10.205.22.30'
+        gitlab_rails['gitlab_ssh_host'] = '10.205.22.30'
+        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT3}
     volumes:
     - ${VOLUME_HOME}/gitlab/config:/etc/gitlab
     - ${VOLUME_HOME}/gitlab/logs:/var/log/gitlab
     - ${VOLUME_HOME}/gitlab/data:/var/opt/gitlab
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: gitlab/gitlab-ce:11.1.4-ce.0
     restart: always
+    image: gitlab/gitlab-ce:11.1.4-ce.0

@@ -4,30 +4,30 @@ services:
     # refer: https://github.com/jenkinsci/docker/blob/master/README.md
     user: root
     ports:
-    - "${JENKINS_PORT1}:8080"
-    - "${JENKINS_PORT2}:50000"
+    - ${JENKINS_PORT1}:8080
+    - ${JENKINS_PORT2}:50000
     volumes:
     - ${VOLUME_HOME}/jenkins/master:/var/jenkins_home
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: jenkins/jenkins:lts
     restart: always
+    image: jenkins/jenkins:lts
   slave1:
     volumes:
     - ${VOLUME_HOME}/jenkins/slave1:/home/jenkins
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_jdk8:0.1
     command:
     - /bin/sh
     - -c
     - "${ANSIBLE_INIT_COMMAND}"
     restart: always
+    image: centos_jdk8:0.1
   slave2:
     volumes:
     - ${VOLUME_HOME}/jenkins/slave2:/home/jenkins
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: centos_jdk8:0.1
     command:
     - /bin/sh
     - -c
     - "${ANSIBLE_INIT_COMMAND}"
     restart: always
+    image: centos_jdk8:0.1

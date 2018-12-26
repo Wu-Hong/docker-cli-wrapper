@@ -2,13 +2,13 @@ version: '3.0'
 services:
   nvm:
     ports:
-    - "${NVM_PORT}:80"
+    - ${NVM_PORT}:80
     volumes:
     - ${VOLUME_HOME}/nvm:/home/nvm
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    image: nvm:0.1
     command:
     - /bin/sh
     - -c
     - "${INIT_COMMAND}"
     restart: always
+    image: nvm:0.1
