@@ -51,17 +51,22 @@ function down()
     done
 }
 
+function get_containers_name() # filename
+{
+    local filename=$1
+    docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps \
+        | awk '{print $1}' \
+        | grep -v Name \
+        | grep -v -e '-----------------------' \
+        | grep -v -e '->' # Resolve that the port mapping part is too long and wraps, causing the container name to be wrong.
+}
+
 function ps()
 {
     for filename in ${arr[@]}
     do
         log "INFO: container info of [${COMPOSE_FILE_DIR}/${filename}.yaml]: "
-        docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps \
-            | awk '{print $1}' \
-            | grep -v Name \
-            | grep -v -e '-----------------------' \
-            | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}" && docker inspect --format=" ┖-> {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
-        # docker ps | grep ${filename} | awk '{print $1}' | xargs -I {} docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}, {{json .Name}}, {{json .Id}}' {}
+        get_containers_name ${filename} | xargs -I {} bash -c 'docker ps --filter="name={}" --format="table {{.Names}}\t{{.CreatedAt}}\t{{.Status}}\t{{.Ports}}" && docker inspect --format=" ↳ {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" {}'
         echo
     done
 }

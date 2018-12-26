@@ -78,11 +78,8 @@ elif [ ${CTL_TYPE} = "cat" ] ; then
     display_compose_file_by_filename ${filename}
 elif [ ${CTL_TYPE} = "in" ] ; then
     filename=$2
-    container_name=`docker-compose -p ${filename} -f ${COMPOSE_FILE_DIR}/${filename}.yaml ps \
-        | awk '{print $1}' \
-        | grep -v Name \
-        | grep -v -e '-----------------------'`
-    if [ -z "$container_name" ]; then
+    container_name=`get_containers_name ${filename}`
+    if [ -z "${container_name}" ]; then
         log "ERROR: The container corresponding to the docker-compose(${filename}) is not running"
         exit
     fi
@@ -101,9 +98,14 @@ elif [ ${CTL_TYPE} = "in" ] ; then
     done
     log "INFO: The shell supported is ${terminal}"
     docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} ${terminal}
-elif [ ${CTL_TYPE} = "once" ] ; then
-    image_name=$2
-    docker run --rm -it ${image_name} bash
+elif [ ${CTL_TYPE} = "logs" ] ; then
+    filename=$2
+    container_name=`get_containers_name ${filename}`
+    if [ -z "${container_name}" ]; then
+        log "ERROR: The container corresponding to the docker-compose(${filename}) is not running"
+        exit
+    fi
+    docker logs ${container_name}
 elif [ ${CTL_TYPE} = "images" ] ; then
     echo "the following images are those exist in the os: "
     docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
