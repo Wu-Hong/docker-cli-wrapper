@@ -7,8 +7,6 @@
 #### nginx
 - can not work now
 
-#### wordpress
-
 #### centos GUI
 - xvfb
     GUI

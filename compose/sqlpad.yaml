@@ -1,0 +1,10 @@
+version: '3.0'
+services:
+  sqlpad:
+    ports:
+    - ${SQLPAD_PORT}:3000
+    volumes:
+    - ${VOLUME_HOME}/sqlpad:/root/sqlpad
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: sqlpad/sqlpad

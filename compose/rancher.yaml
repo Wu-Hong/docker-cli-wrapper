@@ -1,0 +1,11 @@
+version: '3.0'
+services:
+  rancher:
+    ports:
+    - ${RANCHER_PORT1}:80
+    - ${RANCHER_PORT2}:443
+    volumes:
+    - ${VOLUME_HOME}/rancher:/root/rancher
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: unless-stopped
+    image: rancher/rancher
