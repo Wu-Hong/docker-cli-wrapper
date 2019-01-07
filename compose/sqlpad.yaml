@@ -4,7 +4,7 @@ services:
     ports:
     - ${SQLPAD_PORT}:3000
     volumes:
-    - ${VOLUME_HOME}/sqlpad:/root/sqlpad
+    - ${VOLUME_HOME}/sqlpad:/var/lib/sqlpad
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     restart: always
     image: sqlpad/sqlpad

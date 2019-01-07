@@ -6,7 +6,7 @@ source ./set-vars.sh
 source ./utilities.sh
 
 CTL_TYPE=$1
-echo "======================================"
+echo_green "======================================"
 if [ $# -lt 1 ] ; then
     help
 elif [ ${CTL_TYPE} = "init" ] ; then
@@ -181,4 +181,4 @@ elif [ ${CTL_TYPE} = "svc" ] ; then
 else
     help
 fi
-echo "======================================"
+echo_green "======================================"

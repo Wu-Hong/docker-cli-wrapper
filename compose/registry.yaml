@@ -1,0 +1,24 @@
+version: '3.0'
+services:
+  registry-backend:
+    ports:
+    - ${REGISTRY_PORT1}:5000
+    environment:
+    - REGISTRY_HTTP_ADDR=0.0.0.0:5000
+    volumes:
+    - ${VOLUME_HOME}/registry:/var/lib/registry
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: registry:2
+  registry-frontend:
+    ports:
+    - ${REGISTRY_PORT2}:80
+    environment:
+    - ENV_DOCKER_REGISTRY_HOST=registry-backend
+    - ENV_DOCKER_REGISTRY_PORT=5000
+    - ENV_REGISTRY_PROXY_FQDN=localhost
+    - ENV_REGISTRY_PROXY_PORT=${REGISTRY_PORT1}
+    volumes:
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: konradkleine/docker-registry-frontend:v2

@@ -1,0 +1,13 @@
+version: '3.0'
+services:
+  nvm:
+    ports:
+    - "${NVM_PORT}:80"
+    volumes:
+    - ${VOLUME_HOME}/nvm:/home/nvm
+    image: centos:7-dev
+    command:
+    - /bin/sh
+    - -c
+    - "wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && ${INIT_COMMAND}"
+    restart: always
