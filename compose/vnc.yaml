@@ -1,0 +1,15 @@
+version: '3.0'
+services:
+  vnc:
+    ports:
+    - ${VNC_PORT1}:80
+    - ${VNC_PORT2}:5900
+    environment:
+    - VNC_PASSWORD=pswd
+    - HTTP_PASSWORD=pswd
+    - RESOLUTION=1920x1200
+    volumes:
+    - ${VOLUME_HOME}/vnc:/home/vnc
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: dorowu/ubuntu-desktop-lxde-vnc

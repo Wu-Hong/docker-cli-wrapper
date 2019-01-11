@@ -2,7 +2,7 @@ version: '3.0'
 services:
   nvm:
     ports:
-    - "${NVM_PORT}:80"
+    - ${NVM_PORT}:80
     volumes:
     - ${VOLUME_HOME}/nvm:/home/nvm
     image: centos:7-dev
