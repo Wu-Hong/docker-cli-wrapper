@@ -139,22 +139,28 @@ elif [ ${CTL_TYPE} = "validate" ] ; then
         filename=${param}
         docker-compose -f ${COMPOSE_FILE_DIR}/${filename}.yaml config
     fi
-elif [ ${CTL_TYPE} = "clean-disk" ] ; then
-    # this command is suit for mac, so you need judge firstly
-    is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`
-    if [ ${is_mac} -ge 1 ] ; then
-        # read the backup_images.ini and clean the docker images
-        backup_images_list=`read_file_line_by_line "${BACKUP_IMAGES_CONFIG_FILE}" | xargs`
-        bash "${SCRIPT_DIR}/third-party/clean-docker-for-mac.sh" ${backup_images_list}
-    else
-        log "INFO: the os is not mac os, no need to clean disk."
+elif [ ${CTL_TYPE} = "clean" ] ; then
+    param=$2
+    if [ ${param} = "mac" ] ; then
+        # this command is suit for mac, so you need judge firstly
+        is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`
+        if [ ${is_mac} -ge 1 ] ; then
+            # read the backup_images.ini and clean the docker images
+            backup_images_list=`read_file_line_by_line "${BACKUP_IMAGES_CONFIG_FILE}" | xargs`
+            bash "${SCRIPT_DIR}/third-party/clean-docker-for-mac.sh" ${backup_images_list}
+        else
+            log "INFO: the os is not mac os, no need to clean disk."
+        fi
+    elif [ ${param} = "image" ] ; then
+        key_word=$3
+        if [ "${key_word}" = "" ]; then
+            clean_none_images
+        else
+            clean_images ${key_word}
+        fi
+    elif [ ${param} = "volume" ] ; then
+        clean_volume
     fi
-elif [ ${CTL_TYPE} = "clean-images" ] ; then
-    key_word=$2
-    if [ "${key_word}" = "" ]; then
-        help
-    fi
-    clean_images ${key_word}
 elif [ ${CTL_TYPE} = "svc" ] ; then
     svc=$2
     subcmd=$3
