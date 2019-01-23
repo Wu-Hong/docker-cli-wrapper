@@ -100,20 +100,11 @@ function display_compose_file_by_filename()
     cat ${filepath}
 }
 
-function clean_none_images()
+function clean_all()
 {
     # clean the none images
     docker rmi `docker images | grep -E '<none>.*<none>' | awk '{print $3}'`
-}
 
-function clean_images() # images_key_word
-{
-    local key_word=$1
-    docker rmi `docker images | grep "${key_word}" | awk '{print $3}'`
-    clean_none_images
-}
-
-function clean_volume()
-{
     docker volume prune
+    docker network prune
 }

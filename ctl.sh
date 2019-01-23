@@ -45,34 +45,32 @@ elif [ ${CTL_TYPE} = "ps" ] ; then
     param=$2
     arr=""
     if [ ! -n "${param}" ]; then
-        # support for all compose file
+        docker ps -a --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
+    elif [ ${param} = "-a" ] ; then
+        # ps all compose file
         for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
         do
             ele=`basename ${file_path} .yaml`
             arr="$arr $ele"
         done
         ps arr
-    else
+    elif [ ${param} = "-c" ] ; then
+        filename=${param}
+        arr="$arr ${filename}"
+        ps arr
+    elif [ ${param} = "-f" ] ; then
         # support for only one compose file
-        if [ ${param} = "-f" ] ; then
-            filename=$3
-            containers=`get_containers_name ${filename}`
-            while true
+        filename=$3
+        containers=`get_containers_name ${filename}`
+        while true
+        do
+            for container in ${containers}
             do
-                for container in ${containers}
-                do
-                    docker ps -a --filter="name=${container}" --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
-                done
-                echo_green "---"
-                sleep 2
+                docker ps -a --filter="name=${container}" --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
             done
-        elif [ ${param} = "-a" ] ; then
-            docker ps -a --format="table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" --no-trunc
-        else
-            filename=${param}
-            arr="$arr ${filename}"
-            ps arr
-        fi
+            echo_green "---"
+            sleep 2
+        done
     fi
 elif [ ${CTL_TYPE} = "list" ] ; then
     echo "The following are all compose file:"
@@ -151,31 +149,15 @@ elif [ ${CTL_TYPE} = "clean" ] ; then
         else
             log "INFO: the os is not mac os, no need to clean disk."
         fi
-    elif [ ${param} = "image" ] ; then
-        key_word=$3
-        if [ "${key_word}" = "" ]; then
-            clean_none_images
-        else
-            clean_images ${key_word}
-        fi
-    elif [ ${param} = "volume" ] ; then
-        clean_volume
+    elif [ ${param} = "all" ] ; then
+        clean_all
+    else
+        help
     fi
 elif [ ${CTL_TYPE} = "svc" ] ; then
     svc=$2
     subcmd=$3
-    if [ ${svc} = "ss" ] ; then
-        if [ ${subcmd} = "qr" ] ; then
-            protocol="ss://"
-            ip=`ipconfig getifaddr en0`
-            encryptMethod="aes-256-cfb"
-            password="nBhc3N3b3JkQGhvc3R"
-            port=`cat ${ENV_FILE} | grep SS_PORT | sed 's/SS_PORT=//g'`
-            echo ip:${ip} port:${port} password:${password} encrypt:${encryptMethod}
-            # echo -n "ss://"`echo -n aes-256-cfb:nBhc3N3b3JkQGhvc3R@${ip}:30019 | base64` | qr
-            echo -n ${protocol}`echo -n ${encryptMethod}:${password}@${ip}:${port} | base64` | qr
-        fi
-    elif [ ${svc} = "es" ] ; then
+    if [ ${svc} = "es" ] ; then
         if [ ${subcmd} = "qr" ] ; then
             protocol="http://"
             ip=`ipconfig getifaddr en0`

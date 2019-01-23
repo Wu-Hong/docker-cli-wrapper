@@ -1,0 +1,13 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+services:
+  db:
+    environment:
+    - POSTGRES_PASSWORD=example
+    ports:
+    - ${POSTGRES_PORT}:5432
+    volumes:
+    - ${VOLUME_HOME}/postgres/data:/var/lib/postgresql/data
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: postgres:11

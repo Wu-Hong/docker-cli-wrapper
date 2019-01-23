@@ -1,14 +1,13 @@
+### aria2
+- can not work now
+
 #### gocd
 - theory
-
-#### local search engine
-- package name ???
 
 #### nginx
 - can not work now
 
-#### centos GUI
-- xvfb
-    GUI
-- x11vnc
-    GUI Server
+### migrate the repo to cpm
+- cpm = compose package manager
+- clean code
+- up/down/update

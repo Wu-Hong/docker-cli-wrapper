@@ -7,7 +7,7 @@ RUN yum install -y \
   which \
   net-tools \
   lsof \
-  vim-enhanced \ 
+  vim-enhanced \
   gcc \
   python-devel \
   && python /root/get-pip.py \
