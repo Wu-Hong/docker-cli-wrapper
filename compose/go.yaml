@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+  go:
+    ports:
+    - ${GO_PORT}:${GO_PORT}
+    volumes:
+    - ${VOLUME_HOME}/go:/home/go
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    command:
+    - /bin/sh
+    - -c
+    - "${INIT_COMMAND}"
+    restart: always
+    image: golang:1.11

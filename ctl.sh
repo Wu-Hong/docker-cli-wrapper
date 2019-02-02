@@ -55,7 +55,7 @@ elif [ ${CTL_TYPE} = "ps" ] ; then
         done
         ps arr
     elif [ ${param} = "-c" ] ; then
-        filename=${param}
+        filename=$3
         arr="$arr ${filename}"
         ps arr
     elif [ ${param} = "-f" ] ; then

@@ -1,0 +1,10 @@
+# https://github.com/jordic/file_server
+version: "2"
+services:
+  file_server:
+    volumes:
+    - ${VOLUME_HOME}/file_server:/tmp
+    ports:
+    - ${FILE_SERVER_PORT}:8080
+    restart: always
+    image: jordic/file_server:1.0

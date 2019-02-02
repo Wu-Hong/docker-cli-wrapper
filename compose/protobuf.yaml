@@ -1,0 +1,15 @@
+# https://github.com/brennovich/protobuf-tools
+version: "2"
+services:
+  protobuf:
+    ports:
+    - ${PROTOBUF_PORT}:80
+    volumes:
+    - ${VOLUME_HOME}/protobuf/:/home/protobuf
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    command:
+    - /bin/bash
+    - -c
+    - ${INIT_COMMAND}
+    restart: always
+    image: brennovich/protobuf-tools
