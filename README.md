@@ -1,9 +1,11 @@
+[[toc]]
+
 # dcw - docker cli wrapper for Mac OS
 ![](https://upload.wikimedia.org/wikipedia/commons/7/79/Docker_%28container_engine%29_logo.png)
 
 A docker-compose CLI wrapper for the people who try to use docker-compose in Mac OS.
 
-## Sub command
+## Sub Commands
 
 ### init
 Show the alias of using dcw.
@@ -51,57 +53,14 @@ Validate the compose file.
 ### clean-disk
 Clean the disk occupied by docker images for Mac OS.
 
-## Instructions for specific application
+## Instructions for Specific Service
 ### jenkins
-![](https://wiki.jenkins.io/download/attachments/2916393/logo.png?version=1&modificationDate=1302753947000&api=v2)
-* images:
-    - master:
-        jenkins/jenkins:lts
-    - agent:
-        centos_jdk8
-* dcw up jenkins
-    - account:
-        - admin/admin
+~~+ adjust the Jenkins node information based on the query results of IPs~~
+**No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, but you still need to config the host of salves when you first up the jenkins cluster**
 
-* dcw ps jenkins
-    ~~+ adjust the Jenkins node information based on the query results of IPs~~
-    **No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, but you still need to config the host of salves when you first up the jenkins cluster**
-* the way of managing node is using the SSH:
-    - root/admin
+### ansible
+~~+ adjust the /etc/ansible/hosts of ansible master based on the query results of IPs~~
+**No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, even you first up the ansible cluster**
 
-#### ansible
-![](https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg)
-* images:
-    + master:
-        centos_jupyter
-    + slave:
-        centos:7-dev
-* dcw up ansible
-    + jupyter portal:
-        + password: admin
-
-* dcw ps ansible
-    ~~+ adjust the /etc/ansible/hosts of ansible master based on the query results of IPs~~
-    **No need to do this any more, since docker-compose support service communicating with each other by the serivce name which define in one docker-compose file, even you first up the ansible cluster**
-* the way of managing node is using the SSH:
-    + root/admin
-
-#### jupyter
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/640px-Jupyter_logo.svg.png)
-* images:
-    + centos_jupyter
-* dcw up jupyter
-    + jupyter portal:
-        + password: admin
-
-#### gocd
-![](https://impaddo.com/assets/uploads/2017/08/Logo-gocd.png)
-* images:
-    + centos_gocd_server:0.1
-    + centos_gocd_agent:0.1
-* dcw up jupyter
-* by sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
-
-### gitlab
-![](https://about.gitlab.com/images/press/logo/svg/gitlab-logo-gray-rgb.svg)
-* The server will prompt you to change the password of `root` when you first login, I suggest to change to root/iamadmin
+### gocd
+By sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
