@@ -100,10 +100,7 @@ elif [ ${CTL_TYPE} = "in" ] ; then
     log "INFO: The shell supported is ${terminal}"
     docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) ${container_name} ${terminal}
 elif [ ${CTL_TYPE} = "images" ] ; then
-    log "INFO: All images in the os: "
-    docker images --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}\t{{.CreatedAt}}"
-    echo
-    log "INFO: The images were built by dcw (Dockerfile path: ${SCRIPT_DIR}/images): "
+    echo_green "The images were built by dcw (Dockerfile path: ${SCRIPT_DIR}/images): "
     find ${SCRIPT_DIR}/images -name build.sh | xargs -I {} bash -c "cat {} | sed -e 's/.*\(-t.* \).*/\1/g' -e 's/-t //g'"
 elif [ ${CTL_TYPE} = "reboot" ] ; then
     files=$2

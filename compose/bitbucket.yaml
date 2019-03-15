@@ -1,0 +1,12 @@
+# https://hub.docker.com/r/atlassian/bitbucket-server
+version: '3.0'
+services:
+  bitbucket:
+    ports:
+    - ${BITBUCKET1_PORT}:7990
+    - ${BITBUCKET2_PORT}:7999
+    volumes:
+    - ${VOLUME_HOME}/bitbucket:/var/atlassian/application-data/bitbucket
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: atlassian/bitbucket-server
