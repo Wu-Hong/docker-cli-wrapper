@@ -1,6 +1,6 @@
 [[toc]]
 
-# dcw - docker cli wrapper for Mac OS
+# dcw - docker cli wrapper for MacOS
 ![](https://upload.wikimedia.org/wikipedia/commons/7/79/Docker_%28container_engine%29_logo.png)
 
 A docker-compose CLI wrapper for the people who try to use docker-compose in Mac OS.
@@ -64,3 +64,18 @@ Clean the disk occupied by docker images for Mac OS.
 
 ### gocd
 By sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
+
+## Roadmap
+### aria2
+- can not work now
+
+#### gocd
+- theory
+
+#### nginx
+- can not work now
+
+### migrate the repo to cpm
+- cpm = compose package manager
+- clean code
+- up/down/update

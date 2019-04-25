@@ -1,0 +1,11 @@
+version: '3.0'
+services:
+  vscode:
+    ports:
+    - ${VSCODE_PORT}:8443
+    volumes:
+    - ${VOLUME_HOME}/vscode-project:/home/coder/project
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    command: --allow-http --no-auth
+    restart: always
+    image: codercom/code-server

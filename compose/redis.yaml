@@ -1,0 +1,9 @@
+version: '3.0'
+services:
+  redis:
+    ports:
+    - ${REDIS_PORT}:6379
+    volumes:
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: redis
