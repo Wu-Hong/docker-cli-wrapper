@@ -7,7 +7,7 @@ services:
     hostname: EmbyServer
     volumes:
     - ${VOLUME_HOME}/embyserver/programdata:/config # This is mandatory
-    - ~/Downloads/share1:/mnt/share1 # To mount a first share
+    - ~/Downloads/.share1:/mnt/share1 # To mount a first share
     - ${VOLUME_HOME}/embyserver/share2:/mnt/share2 # To mount a second share
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
     # devices:
