@@ -1,0 +1,14 @@
+version: "3"
+services:
+  jellyfin:
+    ports:
+    - ${JELLYFIN_PORT1}:8096 # To expose the HTTP port
+    - ${JELLYFIN_PORT2}:8920 # To expose the HTTPS port
+    hostname: jellyfin
+    volumes:
+      - ${VOLUME_HOME}/jellyfin/path/to/config:/config
+      - ${VOLUME_HOME}/jellyfin/path/to/cache:/cache
+      - ${VOLUME_HOME}/jellyfin/path/to/media:/media
+      - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: jellyfin/jellyfin:10.3.3
