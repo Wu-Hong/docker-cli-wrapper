@@ -79,3 +79,6 @@ By sharing the same file, the agent could know the ip of master, so you no need 
 - cpm = compose package manager
 - clean code
 - up/down/update
+
+### crontab
+- can not work now

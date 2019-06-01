@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  crontab:
+    ports:
+    - ${CRONTAB_PORT}:8000
+    volumes:
+    - ${VOLUME_HOME}/crontab/data:/data
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: alseambusher/crontab-ui:0.3.7
