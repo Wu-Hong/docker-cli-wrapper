@@ -65,6 +65,9 @@ Clean the disk occupied by docker images for Mac OS.
 ### gocd
 By sharing the same file, the agent could know the ip of master, so you no need to care about agent how to find the master.
 
+### httpbin
+https://www.github.com/requests/httpbin
+
 ## Roadmap
 ### aria2
 - can not work now

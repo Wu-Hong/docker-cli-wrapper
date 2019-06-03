@@ -1,0 +1,9 @@
+version: '3.0'
+services:
+  httpbin:
+    ports:
+    - ${HTTPBIN_PORT}:80
+    volumes:
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: kennethreitz/httpbin:latest
