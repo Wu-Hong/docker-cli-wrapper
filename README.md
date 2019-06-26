@@ -1,6 +1,4 @@
-[[toc]]
-
-# dcw - docker cli wrapper for MacOS
+# dcw - docker compose wrapper for human
 ![](https://upload.wikimedia.org/wikipedia/commons/7/79/Docker_%28container_engine%29_logo.png)
 
 A docker-compose CLI wrapper for the people who try to use docker-compose in Mac OS.
