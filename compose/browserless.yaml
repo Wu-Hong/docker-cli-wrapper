@@ -1,0 +1,13 @@
+# https://hub.docker.com/r/browserless/chrome
+# https://www.github.com/browserless/chrome
+# https://docs.browserless.io/docs/docker-quickstart.html
+version: '3.0'
+services:
+  browserless:
+    ports:
+    - ${BROWSERLESS_PORT}:3000
+    volumes:
+    - ${VOLUME_HOME}/browserless:/root/browserless
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: browserless/chrome:1.11.0-chrome-stable
