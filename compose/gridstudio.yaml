@@ -1,0 +1,11 @@
+version: '3.0'
+services:
+  gridstudio:
+    ports:
+      - 8080:8080
+      - 4430:4430
+    volumes:
+    - ${VOLUME_HOME}/gridstudio/userdata:/home/userdata
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: ricklamers/gridstudio:release
