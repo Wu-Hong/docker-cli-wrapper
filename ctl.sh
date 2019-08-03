@@ -3,7 +3,7 @@
 # jump to the directory where the .env file is located to prevent docker-compose can not find environment variables
 cd $(dirname $0)/
 source ./set-vars.sh
-source ./utilities.sh
+source ${SHELL_DIR}/utilities.sh
 
 CTL_TYPE=$1
 echo_green "======================================"
@@ -79,6 +79,15 @@ elif [ ${CTL_TYPE} = "list" ] ; then
         ele=`basename ${file_path} .yaml`
         echo ${ele}
     done
+elif [ ${CTL_TYPE} = "search" ] ; then
+    keyword=$2
+    arr=""
+    for file_path in $(ls ${COMPOSE_FILE_DIR}/*.yaml)
+    do
+        ele=`basename ${file_path} .yaml`
+        arr="$arr $ele"
+    done
+    python ${PYTHON_DIR}/fuzzyfinder.py "\"${arr}\"" "\"${keyword}\""
 elif [ ${CTL_TYPE} = "cat" ] ; then
     filename=$2
     display_compose_file_by_filename ${filename}
