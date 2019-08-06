@@ -1,0 +1,16 @@
+# account: pyload/pyload
+version: "2"
+services:
+  pyload:
+    image: writl/pyload:latest
+    container_name: pyload
+    ports:
+      - ${PYLOAD_PORT}:8000
+    environment:
+      - TZ=Asia/Shanghai
+      - UID=1000
+      - GID=1000
+    volumes:
+      - ${VOLUME_HOME}/pyload/pyload-config:/opt/pyload/pyload-config
+      - ${VOLUME_HOME}/pyload/Downloads:/opt/pyload/Downloads
+    restart: unless-stopped
