@@ -83,3 +83,6 @@ https://www.github.com/requests/httpbin
 
 ### crontab
 - can not work now
+
+# jupyter
+`docker exec jupyter_jupyter_1 jupyter notebook list`

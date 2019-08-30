@@ -1,14 +1,14 @@
+# https://hub.docker.com/r/jupyter/datascience-notebook
+# https://github.com/jupyter/docker-stacks
 version: '3.0'
 services:
   jupyter:
     ports:
-    - ${JUPYTER_PORT}:8080
+    - ${JUPYTER_PORT}:8888
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
     volumes:
-    - ${VOLUME_HOME}/jupyter/workspace:/home/jupyter
+    - ${VOLUME_HOME}/jupyter/workspace:/home/jovyan/work
     - ${VOLUME_HOME}/.bashrc:/root/.bashrc
-    command:
-    - /bin/sh
-    - -c
-    - "${JUPYTER_INIT_COMMAND}"
     restart: always
-    image: centos_jupyter:0.1
+    image: jupyter/datascience-notebook:2ce7c06a61a1
