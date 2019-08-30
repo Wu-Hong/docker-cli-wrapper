@@ -1,0 +1,10 @@
+# Use admin/rattic as user/password credentials
+version: '3.1'
+services:
+  ratticdb:
+    ports:
+    - ${RATTICDB_PORT}:80
+    volumes:
+    - ${VOLUME_HOME}/.bashrc:/root/.bashrc
+    restart: always
+    image: vikas027/ratticdb
