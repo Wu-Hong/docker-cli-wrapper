@@ -108,3 +108,14 @@ function clean_all()
     docker volume prune
     docker network prune
 }
+
+function clean_exited_containers()
+{
+    is_exited=`docker ps -a | grep "Exited (" | awk '{print $1}' | wc -l`
+    if [ ${is_exited} -ge 1 ] ; then
+        docker rm `docker ps -a | grep "Exited (" | awk '{print $1}'`
+    else
+        log "INFO: no exited container."
+    fi
+
+}

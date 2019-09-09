@@ -157,6 +157,8 @@ elif [ ${CTL_TYPE} = "clean" ] ; then
         fi
     elif [ ${param} = "all" ] ; then
         clean_all
+    elif [ ${param} = "exited" ] ; then
+        clean_exited_containers
     else
         help
     fi
