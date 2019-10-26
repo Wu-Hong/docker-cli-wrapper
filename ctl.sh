@@ -6,7 +6,6 @@ source ./set-vars.sh
 source ${SHELL_DIR}/utilities.sh
 
 CTL_TYPE=$1
-echo_green "======================================"
 if [ $# -lt 1 ] ; then
     help
 elif [ ${CTL_TYPE} = "init" ] ; then
@@ -145,20 +144,33 @@ elif [ ${CTL_TYPE} = "validate" ] ; then
     fi
 elif [ ${CTL_TYPE} = "clean" ] ; then
     param=$2
-    if [ ${param} = "mac" ] ; then
-        # this command is suit for mac, so you need judge firstly
-        is_mac=`docker info | grep "Operating System" | grep -i mac | wc -l`
-        if [ ${is_mac} -ge 1 ] ; then
-            # read the backup_images.ini and clean the docker images
-            backup_images_list=`read_file_line_by_line "${BACKUP_IMAGES_CONFIG_FILE}" | xargs`
-            bash "${SCRIPT_DIR}/third-party/clean-docker-for-mac.sh" ${backup_images_list}
-        else
-            log "INFO: the os is not mac os, no need to clean disk."
-        fi
-    elif [ ${param} = "all" ] ; then
+    if [ ${param} = "all" ] ; then
         clean_all
     elif [ ${param} = "exited" ] ; then
         clean_exited_containers
+    else
+        help
+    fi
+elif [ ${CTL_TYPE} = "stash" ] ; then
+    param=$2
+    if [ ${param} = "save" ] ; then
+        # read the backup_images.ini and clean the docker images
+        backup_images_list=`read_file_line_by_line "${BACKUP_IMAGES_CONFIG_FILE}" | xargs`
+        echo "=> Saving the specified images"
+        for image in ${backup_images_list}; do
+            echo "==> Saving ${image}"
+            tar=$(echo -n ${image} | base64)
+            docker save -o ${BACKUP_IMAGES_DIR}/${tar}.tar ${image}
+            echo "==> Done."
+        done
+    elif [ ${param} = "pop" ] ; then
+        echo "=> Loading saved images"
+        for image in ${backup_images_list}; do
+            echo "==> Loading ${image}"
+            tar=$(echo -n ${image} | base64)
+            docker load -q -i ${BACKUP_IMAGES_DIR}/${tar}.tar || exit 1
+            echo "==> Done."
+        done
     else
         help
     fi
@@ -177,4 +189,3 @@ elif [ ${CTL_TYPE} = "svc" ] ; then
 else
     help
 fi
-echo_green "======================================"
